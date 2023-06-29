@@ -21,5 +21,6 @@ I need to make the site responsive for tablets, cell phones and computers, and I
 
 # Demo
 
-In this initial version of the site, the blood count reader does not exist, and the central button "Clinica" (Clinic in portuguese) takes you to the symptomatology filter page, and the button on the right side "Doenças" (Disease in portuguese) leads to a search for diseases to read the description, see symptoms, and others
+In this initial version of the site, the blood count reader does not exist, and the central button "Clinica" (Clinic in portuguese) takes you to the symptomatology filter page, and the button on the right side "Doenças" (Disease in portuguese) leads to a search for diseases to read the description, see symptoms, and others.
+
 https://clinicalvet.vercel.app/
