@@ -1,0 +1,71 @@
+$mainColor: #69c1c4;
+
+html,
+body{
+    background-color: $mainColor;
+    font-family: 'Montserrat', sans-serif;
+}
+.container{
+    padding: 2vh;
+}
+
+.circleImage{
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    transition: 0.5s;
+
+    &:hover{
+        transform: scale(1.1);
+    }
+}
+
+// HomePage
+.imgPawsHomePage{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 0;
+}
+
+.imgDogCatHomePage{
+    max-width: 50%;
+}
+
+.titleHomePage{
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    padding-top: 1rem;
+}
+
+.horizontalLine{
+    border: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.309), #69c1c4, rgba(255, 255, 255, 0.309));
+    height: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.options{
+    padding-top: 1em;
+}
+
+.option{
+    z-index: 3;
+}
+
+.linkImage{
+    cursor: pointer;
+}
+.linkText{
+    text-transform: uppercase;
+    padding-top: 1.40rem;
+    padding-bottom: 1.5rem;
+    transition: 0.75s ease;
+    &:hover{
+        color: white;
+    }
+}
