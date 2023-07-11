@@ -25,7 +25,7 @@ export default function Clinic() {
               Ver Sintomas
             </button>
             {showSymptoms && (
-              <div className="bg-white shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
+              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
                   <a className="symptomUnchecked">Dor de cabeça</a>
                   <a className="symptomUnchecked">Febre</a>
                   <a className="symptomUnchecked">Cansaço</a>
@@ -50,7 +50,7 @@ export default function Clinic() {
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
               Sintomas Selecionados
             </span>
-            <div className="bg-white shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
+            <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
               <a className="symptomUnchecked">Dor de Cabeça</a>
               <a className="symptomUnchecked">Dor de Cabeça</a>
               <a className="symptomUnchecked">Dor de Cabeça</a>
@@ -59,9 +59,9 @@ export default function Clinic() {
         </div>
 
         <div className="grid grid-cols-6 gap-3 pl-10 pr-10 pt-10">
-          <div className="bg-azulclaro text-white shadow-lg rounded-lg p-6">
+          <div className="bg-white text-black shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">Nome da Doença</h2>
-            <p className="text-gray-100 mb-4">
+            <p className="text-gray-600 mb-4">
               Descrição da doença Lorem ipsum dolor sit amet, consectetur
               adipiscing elit.
             </p>
@@ -72,7 +72,7 @@ export default function Clinic() {
               <li>Cansaço</li>
             </ul>
           </div>
-          <div className="bg-azulclaro shadow-lg rounded-lg p-6">
+          <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">Nome da Doença</h2>
             <p className="text-gray-600 mb-4">
               Descrição da doença Lorem ipsum dolor sit amet, consectetur
