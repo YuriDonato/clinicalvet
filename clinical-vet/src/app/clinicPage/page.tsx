@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { MdKeyboardArrowDown } from "react-icons/Md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 export default function Clinic() {
   // Fazer o botão de abrir e fechar sintomas
