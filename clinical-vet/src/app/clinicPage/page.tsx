@@ -1,66 +1,90 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { MdKeyboardArrowDown } from "react-icons/Md";
 
 export default function Clinic() {
   // Fazer o botão de abrir e fechar sintomas
   const [showSymptoms, setShowSymptoms] = useState(false);
+  const [showSelectedSymptoms, setShowSelectedSymptoms] = useState(false);
+  var [style,setStyle] = useState("rotate-0");
+  const [currentState, setCurrentState] = useState(false)
+
+  const changeStyle = () => {
+    if(currentState){
+      setStyle("rotate-0");
+    }else{
+      setStyle("rotate-180");
+    }
+  }
+
+  const toggleCurrentState = () => {
+    setCurrentState(!currentState);
+  }
 
   const toggleSymptoms = () => {
     setShowSymptoms(!showSymptoms);
+    changeStyle()
+    toggleCurrentState()
   };
-  const [showSelectedSymptoms, setShowSelectedSymptoms] = useState(false);
 
   const toggleSelectedSymptoms = () => {
     setShowSelectedSymptoms(!showSelectedSymptoms);
+    changeStyle()
+    toggleCurrentState()
   };
 
-
-// retorno do html
+  // retorno do html
   return (
     <div className="p-10">
-      <Link href={'/'}><span className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Retornar</span></Link>
+      <div>
+        <Link href={"/"}>
+          {" "}
+          <button>
+            <img className="buttonArrow" src="/arrow-right.svg" alt="" />
+          </button>{" "}
+        </Link>
+      </div>
       <center>
         <div className="grid grid-cols-2 gap-5">
           <section id="unselectedSymptoms">
             <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="buttonOpen bg-azulclaro text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={toggleSymptoms}
             >
               Sintomas
+              <MdKeyboardArrowDown className={style} />
             </button>
             {showSymptoms && (
               <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
-                  <a className="symptomUnchecked">Dor de cabeça</a>
-                  <a className="symptomUnchecked">Febre</a>
-                  <a className="symptomUnchecked">Cansaço</a>
-                  <a className="symptomUnchecked">Tontura</a>
-                  <a className="symptomUnchecked">Náuseas</a>
-                  <a className="symptomUnchecked">Febre</a>
-                  <a className="symptomUnchecked">Cansaço</a>
-                  <a className="symptomUnchecked">Dor de cabeça</a>
-                  <a className="symptomUnchecked">Náuseas</a>
-                  <a className="symptomUnchecked">Tontura</a>
-                  <a className="symptomUnchecked">Febre</a>
-                  <a className="symptomUnchecked">Dor de cabeça</a>
-                  <a className="symptomUnchecked">Cansaço</a>
-                  <a className="symptomUnchecked">Tontura</a>
-                  <a className="symptomUnchecked">Náuseas</a>
-                  
+                <a className="symptomUnchecked">Dor de cabeça</a>
+                <a className="symptomUnchecked">Febre</a>
+                <a className="symptomUnchecked">Cansaço</a>
+                <a className="symptomUnchecked">Tontura</a>
+                <a className="symptomUnchecked">Náuseas</a>
+                <a className="symptomUnchecked">Febre</a>
+                <a className="symptomUnchecked">Cansaço</a>
+                <a className="symptomUnchecked">Dor de cabeça</a>
+                <a className="symptomUnchecked">Náuseas</a>
+                <a className="symptomUnchecked">Tontura</a>
+                <a className="symptomUnchecked">Febre</a>
+                <a className="symptomUnchecked">Dor de cabeça</a>
+                <a className="symptomUnchecked">Cansaço</a>
+                <a className="symptomUnchecked">Tontura</a>
+                <a className="symptomUnchecked">Náuseas</a>
               </div>
             )}
           </section>
           <section id="selectedSymptoms">
             <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="buttonOpen bg-azulclaro text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={toggleSelectedSymptoms}
             >
-              Sintomas
+              Selecionados <MdKeyboardArrowDown className={style}  />
             </button>
             {showSelectedSymptoms && (
               <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
-                  <a className="symptomUnchecked">Dor de cabeça</a>
-                  
+                <a className="symptomUnchecked">Dor de cabeça</a>
               </div>
             )}
           </section>

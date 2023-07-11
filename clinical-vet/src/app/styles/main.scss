@@ -16,6 +16,12 @@ body {
   padding: 20px;
 }
 
+.buttonArrow{
+  max-width: 100%;
+  width: 60px;
+  transform: rotate(180deg);
+}
+
 .bg-azulclaro{
   background-color: $buttonColor;
 }
@@ -92,6 +98,10 @@ body {
 
 
 // Sintomas
+.buttonOpen{
+  align-items: center;
+  display: flex;
+}
 
 .symptomUnchecked{
   text-decoration: none;
