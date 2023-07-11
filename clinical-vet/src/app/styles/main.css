@@ -71,9 +71,10 @@ body {
   padding-top: 1.4rem;
   padding-bottom: 1.5rem;
   transition: 0.75s ease;
+  color: white;
 }
 .linkText:hover {
-  color: white;
+  color: black;
 }
 
 .img-container {
