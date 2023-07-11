@@ -1,4 +1,5 @@
 $mainColor: #69c1c4;
+$buttonColor: #a5d9db;
 
 html,
 body {
@@ -13,6 +14,10 @@ body {
   max-width: 800px;
   width: 100%;
   padding: 20px;
+}
+
+.bg-azulclaro{
+  background-color: $buttonColor;
 }
 
 .circleImage {

@@ -13,6 +13,10 @@ body {
   padding: 20px;
 }
 
+.bg-azulclaro {
+  background-color: #a5d9db;
+}
+
 .circleImage {
   width: 15rem;
   height: 15rem;

@@ -59,7 +59,7 @@ export default function Clinic() {
         </div>
 
         <div className="grid grid-cols-6 gap-3 pl-10 pr-10 pt-10">
-          <div className="bg-white shadow-lg rounded-lg p-6">
+          <div className="bg-azulclaro text-white shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">Nome da Doença</h2>
             <p className="text-gray-600 mb-4">
               Descrição da doença Lorem ipsum dolor sit amet, consectetur
@@ -72,7 +72,7 @@ export default function Clinic() {
               <li>Cansaço</li>
             </ul>
           </div>
-          <div className="bg-white shadow-lg rounded-lg p-6">
+          <div className="bg-azulclaro shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">Nome da Doença</h2>
             <p className="text-gray-600 mb-4">
               Descrição da doença Lorem ipsum dolor sit amet, consectetur
