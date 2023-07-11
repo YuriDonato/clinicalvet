@@ -22,7 +22,7 @@ export default function Clinic() {
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={toggleSymptoms}
             >
-              Ver Sintomas
+              Sintomas
             </button>
             {showSymptoms && (
               <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
@@ -48,7 +48,7 @@ export default function Clinic() {
           <section id="selectedSymptoms">
           <span
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              Sintomas Selecionados
+              Selecionados
             </span>
             <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
               <a className="symptomUnchecked">Dor de Cabeça</a>
