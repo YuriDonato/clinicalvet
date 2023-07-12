@@ -31,7 +31,7 @@ export default function Home() {
 
       <hr className="horizontalLine" />
 
-      <section className="options grid grid-cols-3 content-between gap-5">
+      <section className="options grid md:grid-cols-1 grid-cols-3 content-between gap-5">
         <div className="option">
           <a>
             <Link href="/hemoPage">
