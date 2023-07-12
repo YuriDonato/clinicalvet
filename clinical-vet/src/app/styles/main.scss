@@ -118,3 +118,13 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
+.checkUncheckMenu{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.symptomUncheckedContainer{
+  max-width: 20px;
+}
