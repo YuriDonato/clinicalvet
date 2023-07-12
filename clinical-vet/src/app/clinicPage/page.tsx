@@ -56,22 +56,10 @@ export default function Clinic() {
               <MdKeyboardArrowDown className={style} />
             </button>
             {showSymptoms && (
-              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
-                <a className="symptomUnchecked">Dor de cabeça</a>
+              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4  gap-2">
                 <a className="symptomUnchecked">Febre</a>
                 <a className="symptomUnchecked">Cansaço</a>
-                <a className="symptomUnchecked">Tontura</a>
-                <a className="symptomUnchecked">Náuseas</a>
-                <a className="symptomUnchecked">Febre</a>
-                <a className="symptomUnchecked">Cansaço</a>
-                <a className="symptomUnchecked">Dor de cabeça</a>
-                <a className="symptomUnchecked">Náuseas</a>
-                <a className="symptomUnchecked">Tontura</a>
-                <a className="symptomUnchecked">Febre</a>
-                <a className="symptomUnchecked">Dor de cabeça</a>
-                <a className="symptomUnchecked">Cansaço</a>
-                <a className="symptomUnchecked">Tontura</a>
-                <a className="symptomUnchecked">Náuseas</a>
+
               </div>
             )}
           </section>
@@ -83,14 +71,14 @@ export default function Clinic() {
               Selecionados <MdKeyboardArrowDown className={style}  />
             </button>
             {showSelectedSymptoms && (
-              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid grid-cols-5 gap-2">
+              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid  gap-2">
                 <a className="symptomUnchecked">Dor de cabeça</a>
               </div>
             )}
           </section>
         </div>
 
-        <div className="grid grid-cols-6 gap-3 pl-10 pr-10 pt-10">
+        <div className="grid tablet:grid-cols-2 desktop:grid-cols-6 gap-3 pl-10 pr-10 pt-10">
           <div className="bg-white text-black shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">Nome da Doença</h2>
             <p className="text-gray-600 mb-4">
