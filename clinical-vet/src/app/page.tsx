@@ -8,7 +8,7 @@ export default function Home() {
       <div className="container">
         <div className="img-container">
           <img
-            className="imgPawsHomePage"
+            className="imgPawsHomePage md:top-36"
             src="/dogPaws.png"
             alt="Dog Paws crossing the screen"
           />
