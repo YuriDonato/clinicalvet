@@ -24,12 +24,9 @@ export default function loginTestPage() {
   const handleClick = () => setShow(!show);
 
   function login() {
-    console.log("tentou login");
     if (name === trueName && senha === truePassword) {
-      console.log("conseguiu login");
       router.push("/testPage");
     } else {
-      console.log("falhou login");
     }
   }
   return (
