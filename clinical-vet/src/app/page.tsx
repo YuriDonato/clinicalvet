@@ -63,7 +63,7 @@ export default function Home() {
                 </div>
             </section>
             <div className="option">
-                <Link href="/testPage">
+                <Link href="/loginTestPage">
                     <img
                         className="circleImage linkImage"
                         src="test.jpg"
