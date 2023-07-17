@@ -23,6 +23,10 @@ export default function Hemograma() {
           <label className="block text-gray-700 font-bold mb-2" htmlFor="plaquetas">Plaquetas:</label>
           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="plaquetas" type="text" placeholder="Digite o valor das plaquetas" />
         </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="plaquetas">Plaquetas:</label>
+          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="plaquetas" type="text" placeholder="Digite o valor das plaquetas" />
+        </div>
         {/* Outros campos do hemograma */}
         <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Enviar</button>
       </form>
