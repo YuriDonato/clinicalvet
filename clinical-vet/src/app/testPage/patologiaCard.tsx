@@ -45,7 +45,7 @@ const PatologiaCard: React.FC<PatologiaCardProps> = ({ patologia }) => {
 
   return (
     <>
-      <SearchIcon onClick={handleSearchIconClick} />
+      <SearchIcon cursor={'pointer'} onClick={handleSearchIconClick} />
       {isDrawerOpen && <PatologiaDrawer isOpen={isDrawerOpen} onClose={handleCloseDrawer} patologia={patologia} />}
     </>
   );

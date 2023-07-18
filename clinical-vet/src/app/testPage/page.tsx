@@ -219,11 +219,9 @@ export default function Test() {
 
     // Drawer de Informação da Doença
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
     function onOpen() {
         setIsDrawerOpen(true);
     }
-
     function onClose() {
         setIsDrawerOpen(false);
     }
@@ -975,7 +973,11 @@ export default function Test() {
                                                                 {
                                                                     patologia.nomePatologia
                                                                 }{" "}
-                                                                <SearchIcon />
+                                                                <PatologiaCard
+                                                                    patologia={
+                                                                        patologia
+                                                                    }
+                                                                />
                                                                 <EditIcon
                                                                     marginLeft={
                                                                         "2px"
