@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import SymptomTab from "./_symptomTab";
 
 export default function Clinic() {
   // Fazer o botão de abrir e fechar sintomas
@@ -56,21 +57,7 @@ export default function Clinic() {
               <MdKeyboardArrowDown className={style} />
             </button>
             {showSymptoms && (
-              <div className="checkUncheckMenu symptomUnchekedContainer bg-azulclaro shadow-lg rounded-lg p-6 mt-4  grid-cols-5 md:grid-cols-2 gap-2">
-
-                <a className="symptomUnchecked">Febre</a>
-                <a className="symptomUnchecked">Cansaço</a>
-                <a className="symptomUnchecked">Tontura</a>
-                <a className="symptomUnchecked">Náuseas</a>
-                <a className="symptomUnchecked">Febre</a>
-                <a className="symptomUnchecked">Cansaço</a>
-                <a className="symptomUnchecked">Náuseas</a>
-                <a className="symptomUnchecked">Tontura</a>
-                <a className="symptomUnchecked">Febre</a>
-                <a className="symptomUnchecked">Cansaço</a>
-                <a className="symptomUnchecked">Tontura</a>
-                <a className="symptomUnchecked">Náuseas</a>
-              </div>
+              <SymptomTab/>
             )}
           </section>
           <section id="selectedSymptoms">
