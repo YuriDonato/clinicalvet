@@ -40,7 +40,7 @@ const SymptomTab = () => {
     const [showSelectedSymptoms, setShowSelectedSymptoms] = useState(false);
     var [style, setStyle] = useState("rotate-0");
     const [currentState, setCurrentState] = useState(false);
-    const [firstClick, setFirstClick] = useState(true);
+    const [keySymptomsSelecionados, setKeySymptomsSelecionados] = useState([""]);
 
     const changeStyle = () => {
         if (currentState) {
@@ -150,6 +150,7 @@ const SymptomTab = () => {
             ]);
         }
     };
+    
 
     return (
         <div className="grid md:grid-cols-1 grid-cols-2 gap-5">

@@ -65,6 +65,8 @@ type Sintoma = {
 };
 
 export default function Test() {
+    //load
+    const [isLoading, setIsLoading] = useState(false)
     // Key
     const [chave, setChave] = useState("");
     // Valores Sintomas
@@ -92,7 +94,7 @@ export default function Test() {
         tratamento: "",
         prevencao: "",
         prognostico: "",
-        sintomas: [""],
+        sintomas: [],
     });
     const [emptyPatologiaData, setEmptyPatologiaData] = useState<Patologia>({
         chave: "",
@@ -116,7 +118,7 @@ export default function Test() {
         tratamento: "",
         prevencao: "",
         prognostico: "",
-        sintomas: [""],
+        sintomas: [],
     });
     // Valores patologia para checkbox
     const [cachorro, setCachorro] = useState("semcachorro");
@@ -445,6 +447,39 @@ export default function Test() {
             isClosable: true,
         });
     }
+
+    // Adicionar Novo Simtoma na Lista
+    const [keySymptomsSelecionados, setKeySymptomsSelecionados] = useState([
+        "",
+    ]);
+
+    function adicionarNovoSintoma(
+        keySymptomsSelecionados: string[],
+        setKeySymptomsSelecionados: React.Dispatch<
+            React.SetStateAction<string[]>
+        >,
+        newSymptom: string
+    ) {
+        const updatedSymptoms = [...keySymptomsSelecionados, newSymptom];
+        setKeySymptomsSelecionados(updatedSymptoms);
+        setPatologiaData({...patologiaData,sintomas: keySymptomsSelecionados})
+        setIsLoading(false)
+    }
+
+    function removerSintoma(
+        keySymptomsSelecionados: string[],
+        setKeySymptomsSelecionados: React.Dispatch<React.SetStateAction<string[]>>,
+        symptomToRemove: string
+    ) {
+        const updatedSymptoms = keySymptomsSelecionados.filter(symptom => symptom !== symptomToRemove);
+        setKeySymptomsSelecionados(updatedSymptoms);
+        setPatologiaData({...patologiaData,sintomas: keySymptomsSelecionados})
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        console.log(patologiaData)
+    }, [patologiaData]);
 
     return (
         <div>
@@ -945,7 +980,7 @@ export default function Test() {
                                                 <Text>Selecionados:</Text>
                                                 <Card>
                                                     <CardBody>
-                                                        {selectedSymptoms.map(
+                                                        {isLoading ? selectedSymptoms.map(
                                                             (
                                                                 sintoma,
                                                                 index
@@ -955,12 +990,6 @@ export default function Test() {
                                                                         cursor={
                                                                             "pointer"
                                                                         }
-                                                                        onClick={() =>
-                                                                            handleSymptomClick(
-                                                                                index,
-                                                                                false
-                                                                            )
-                                                                        }
                                                                     >
                                                                         {
                                                                             sintoma.nomeSintoma
@@ -968,12 +997,52 @@ export default function Test() {
                                                                     </Tag>
                                                                 );
                                                             }
-                                                        )}
+                                                        ):selectedSymptoms.map(
+                                                            (
+                                                                sintoma,
+                                                                index
+                                                            ) => {
+                                                                return (
+                                                                    <Tag
+                                                                        cursor={
+                                                                            "pointer"
+                                                                        }
+                                                                        onClick={() =>{
+                                                                            removerSintoma(keySymptomsSelecionados, setKeySymptomsSelecionados, sintoma.chave);
+                                                                            handleSymptomClick(
+                                                                                index,
+                                                                                false
+                                                                            )}
+                                                                        }
+                                                                    > <p>LOADING TRUE</p>
+                                                                        {
+                                                                            sintoma.nomeSintoma
+                                                                        }
+                                                                    </Tag>
+                                                                );
+                                                            }
+                                                        )
+                                                        }
                                                     </CardBody>
                                                 </Card>
                                             </CardHeader>
                                             <CardBody>
-                                                {unselectedSymptoms.map(
+                                                {isLoading ? unselectedSymptoms.map(
+                                                    (sintoma, index) => {
+                                                        return (
+                                                            <Tag
+                                                                cursor={
+                                                                    "pointer"
+                                                                }
+                                                            >
+                                                                <p>LOADING TRUE</p>
+                                                                {
+                                                                    sintoma.nomeSintoma
+                                                                }
+                                                            </Tag>
+                                                        );
+                                                    }
+                                                ):unselectedSymptoms.map(
                                                     (sintoma, index) => {
                                                         return (
                                                             <Tag
@@ -981,19 +1050,24 @@ export default function Test() {
                                                                     "pointer"
                                                                 }
                                                                 onClick={() =>
-                                                                    handleSymptomClick(
+                                                                    {
+                                                                        setIsLoading(true);
+                                                                        adicionarNovoSintoma(keySymptomsSelecionados, setKeySymptomsSelecionados, sintoma.chave)
+                                                                        handleSymptomClick(
                                                                         index,
                                                                         true
-                                                                    )
+                                                                    )}
                                                                 }
                                                             >
+                                                                <p>LOADING FALSE</p>
                                                                 {
                                                                     sintoma.nomeSintoma
                                                                 }
                                                             </Tag>
                                                         );
                                                     }
-                                                )}
+                                                )
+                                                }
                                             </CardBody>
                                         </Card>
                                         {modificando ? (
