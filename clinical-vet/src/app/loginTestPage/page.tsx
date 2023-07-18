@@ -12,20 +12,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, FormEvent, useEffect } from "react";
 
-export default function loginTestPage() {
+export default function LoginTestPage() {
   const [name, setName] = useState("");
   const [senha, setSenha] = useState("");
   const trueName = "admin";
   const truePassword = "admin123";
 
-  const router = useRouter();
+  const useRouterPage = useRouter();
 
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
   function login() {
     if (name === trueName && senha === truePassword) {
-      router.push("/testPage");
+      useRouterPage.push("/testPage");
     } else {
     }
   }
