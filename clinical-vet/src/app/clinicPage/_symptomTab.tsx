@@ -1,8 +1,8 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { Text, Box } from "@chakra-ui/react";
 import { database } from "../services/firebase";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 type Patologia = {
     chave: string;
@@ -35,8 +35,40 @@ type Sintoma = {
 };
 
 const SymptomTab = () => {
-    const [sintomas, setSintomas] = useState<Sintoma[]>();
-    const [patologias, setPatologias] = useState<Patologia[]>();
+    // Logica dos botoes principais
+    const [showSymptoms, setShowSymptoms] = useState(false);
+    const [showSelectedSymptoms, setShowSelectedSymptoms] = useState(false);
+    var [style, setStyle] = useState("rotate-0");
+    const [currentState, setCurrentState] = useState(false);
+    const [firstClick, setFirstClick] = useState(true);
+
+    const changeStyle = () => {
+        if (currentState) {
+            setStyle("rotate-0");
+        } else {
+            setStyle("rotate-180");
+        }
+    };
+
+    const toggleCurrentState = () => {
+        setCurrentState(!currentState);
+    };
+
+    const toggleSymptoms = () => {
+        setShowSymptoms(!showSymptoms);
+        changeStyle();
+        toggleCurrentState();
+    };
+
+    const toggleSelectedSymptoms = () => {
+        setShowSelectedSymptoms(!showSelectedSymptoms);
+        changeStyle();
+        toggleCurrentState();
+    };
+
+    // Logica para database
+    const [sintomas, setSintomas] = useState<Sintoma[]>([]);
+    const [patologias, setPatologias] = useState<Patologia[]>([]);
 
     useEffect(() => {
         const refSintomas = database.ref("sintomas");
@@ -52,6 +84,7 @@ const SymptomTab = () => {
                 };
             });
             setSintomas(resultadoSintoma);
+            setUnselectedSymptoms(sintomas);
         });
 
         refPatologias.on("value", (resultado) => {
@@ -85,19 +118,88 @@ const SymptomTab = () => {
             });
             setPatologias(resultadoPatologia);
         });
+
+        
     }, []);
 
+    useEffect(() => {
+        setUnselectedSymptoms(sintomas)
+    }, [sintomas]);
+
+    const [unselectedSymptoms, setUnselectedSymptoms] = useState<Sintoma[]>(sintomas);
+    const [selectedSymptoms, setSelectedSymptoms] = useState<Sintoma[]>([]);
+
+    const handleSymptomClick = (index: number, isUnselected: boolean) => {
+        if (isUnselected) {
+            const clickedSymptom = unselectedSymptoms[index];
+            setUnselectedSymptoms((prevSymptoms) =>
+                prevSymptoms.filter((_, i) => i !== index)
+            );
+            setSelectedSymptoms((prevSymptoms) => [
+                ...prevSymptoms,
+                clickedSymptom,
+            ]);
+        } else {
+            const clickedSymptom = selectedSymptoms[index];
+            setSelectedSymptoms((prevSymptoms) =>
+                prevSymptoms.filter((_, i) => i !== index)
+            );
+            setUnselectedSymptoms((prevSymptoms) => [
+                ...prevSymptoms,
+                clickedSymptom,
+            ]);
+        }
+    };
+
     return (
-        <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-2 grid-cols-5 gap-2">
-            {sintomas?.map((sintoma) => {
-                return (
-                    <Box cursor={'pointer'} key={sintoma.chave} className="symptomUnchecked" >
-                        <Text>{sintoma.nomeSintoma} </Text>
-                    </Box>
-                );
-            })}
+        <div className="grid md:grid-cols-1 grid-cols-2 gap-5">
+            <section id="unselectedSymptoms">
+                <button
+                    className="buttonOpen bg-azulclaro text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={toggleSymptoms}
+                >
+                    Sintomas
+                    <MdKeyboardArrowDown className={style} />
+                </button>
+                {showSymptoms && (
+                    <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-2 grid-cols-5 gap-2">
+                        {unselectedSymptoms.map((sintoma, index) => (
+                            <Box
+                                cursor={"pointer"}
+                                key={sintoma.chave}
+                                className="symptomUnchecked"
+                                onClick={() => handleSymptomClick(index, true)}
+                            >
+                                <Text>{sintoma.nomeSintoma}</Text>
+                            </Box>
+                        ))}
+                    </div>
+                )}
+            </section>
+            <section id="selectedSymptoms">
+                <button
+                    className="checkUncheckMenu buttonOpen bg-azulclaro text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    onClick={toggleSelectedSymptoms}
+                >
+                    Selecionados <MdKeyboardArrowDown className={style} />
+                </button>
+                {showSelectedSymptoms && (
+                    <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-2 grid-cols-5 gap-2">
+                        {selectedSymptoms.map((sintoma, index) => (
+                            <Box
+                                cursor={"pointer"}
+                                key={sintoma.chave}
+                                className="symptomUnchecked"
+                                onClick={() => handleSymptomClick(index, false)}
+                            >
+                                <Text>{sintoma.nomeSintoma}</Text>
+                            </Box>
+                        ))}
+                    </div>
+                )}
+            </section>
         </div>
     );
 };
 
-export default SymptomTab;
+export default SymptomTab

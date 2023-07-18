@@ -24,6 +24,7 @@ import {
     Stack,
     Text,
     useDisclosure,
+    Tag,
 } from "@chakra-ui/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
@@ -211,7 +212,7 @@ export default function Test() {
     const [estaBuscando, setEstaBuscando] = useState(false);
 
     // Leitura de Dados
-    const [sintomas, setSintomas] = useState<Sintoma[]>();
+    const [sintomas, setSintomas] = useState<Sintoma[]>([]);
     const [patologias, setPatologias] = useState<Patologia[]>();
 
     // Toast
@@ -226,6 +227,7 @@ export default function Test() {
         setIsDrawerOpen(false);
     }
 
+    // Popular tudo
     useEffect(() => {
         const refSintomas = database.ref("sintomas");
         const refPatologias = database.ref("patologias");
@@ -240,6 +242,7 @@ export default function Test() {
                 };
             });
             setSintomas(resultadoSintoma);
+            setUnselectedSymptoms(resultadoSintoma);
         });
 
         refPatologias.on("value", (resultado) => {
@@ -274,6 +277,37 @@ export default function Test() {
             setPatologias(resultadoPatologia);
         });
     }, []);
+    // Popular check de sintomas
+    const [unselectedSymptoms, setUnselectedSymptoms] =
+        useState<Sintoma[]>(sintomas);
+    const [selectedSymptoms, setSelectedSymptoms] = useState<Sintoma[]>([]);
+
+    useEffect(() => {
+        setUnselectedSymptoms(sintomas);
+    }, [sintomas]);
+    // Lidar com Sintomas Marcados
+
+    const handleSymptomClick = (index: number, isUnselected: boolean) => {
+        if (isUnselected) {
+            const clickedSymptom = unselectedSymptoms[index];
+            setUnselectedSymptoms((prevSymptoms) =>
+                prevSymptoms.filter((_, i) => i !== index)
+            );
+            setSelectedSymptoms((prevSymptoms) => [
+                ...prevSymptoms,
+                clickedSymptom,
+            ]);
+        } else {
+            const clickedSymptom = selectedSymptoms[index];
+            setSelectedSymptoms((prevSymptoms) =>
+                prevSymptoms.filter((_, i) => i !== index)
+            );
+            setUnselectedSymptoms((prevSymptoms) => [
+                ...prevSymptoms,
+                clickedSymptom,
+            ]);
+        }
+    };
 
     function createSymptomData(event: FormEvent) {
         event.preventDefault();
@@ -903,6 +937,65 @@ export default function Test() {
                                                 })
                                             }
                                         />
+                                        <Card
+                                            marginTop={"5px"}
+                                            backgroundColor={"whitesmoke"}
+                                        >
+                                            <CardHeader>
+                                                <Text>Selecionados:</Text>
+                                                <Card>
+                                                    <CardBody>
+                                                        {selectedSymptoms.map(
+                                                            (
+                                                                sintoma,
+                                                                index
+                                                            ) => {
+                                                                return (
+                                                                    <Tag
+                                                                        cursor={
+                                                                            "pointer"
+                                                                        }
+                                                                        onClick={() =>
+                                                                            handleSymptomClick(
+                                                                                index,
+                                                                                false
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            sintoma.nomeSintoma
+                                                                        }
+                                                                    </Tag>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </CardBody>
+                                                </Card>
+                                            </CardHeader>
+                                            <CardBody>
+                                                {unselectedSymptoms.map(
+                                                    (sintoma, index) => {
+                                                        return (
+                                                            <Tag
+                                                                cursor={
+                                                                    "pointer"
+                                                                }
+                                                                onClick={() =>
+                                                                    handleSymptomClick(
+                                                                        index,
+                                                                        true
+                                                                    )
+                                                                }
+                                                            >
+                                                                {
+                                                                    sintoma.nomeSintoma
+                                                                }
+                                                            </Tag>
+                                                        );
+                                                    }
+                                                )}
+                                            </CardBody>
+                                        </Card>
                                         {modificando ? (
                                             <Button
                                                 colorScheme="teal"

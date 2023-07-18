@@ -47,34 +47,7 @@ export default function Clinic() {
         </Link>
       </div>
       <center>
-        <div className="grid md:grid-cols-1 grid-cols-2 gap-5">
-          <section id="unselectedSymptoms">
-            <button
-              className="buttonOpen bg-azulclaro text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={toggleSymptoms}
-            >
-              Sintomas
-              <MdKeyboardArrowDown className={style} />
-            </button>
-            {showSymptoms && (
-              <SymptomTab/>
-            )}
-          </section>
-          <section id="selectedSymptoms">
-            <button
-              className="checkUncheckMenu buttonOpen bg-azulclaro text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={toggleSelectedSymptoms}
-            >
-              Selecionados <MdKeyboardArrowDown className={style}  />
-            </button>
-            {showSelectedSymptoms && (
-              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-2 grid-cols-5 gap-2">
-                <a className="symptomUnchecked" style={{width: 'fit-content'}}>Cansaço</a>
-              </div>
-            )}
-          </section>
-        </div>
-
+        <SymptomTab/>
         <div className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6  gap-3 pl-10 pr-10 pt-10">
           <div className="bg-white text-black shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">Nome da Doença</h2>
