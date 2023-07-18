@@ -1,7 +1,7 @@
 // PatologiaCard.tsx
 import { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
-import PatologiaDrawer from "../PatologiaDrawer/page";
+import PatologiaDrawer from "./pageDrawer";
 
 type Patologia = {
   chave: string;
