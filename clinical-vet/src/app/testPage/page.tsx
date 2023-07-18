@@ -24,7 +24,9 @@ import {
     Stack,
     Text,
 } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
+import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import { EditIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 
 import { database } from "../services/firebase";
 
@@ -86,19 +88,52 @@ export default function Test() {
         tratamento: "",
         prevencao: "",
         prognostico: "",
-        sintomas: [],
+        sintomas: [""],
     });
+    const [emptyPatologiaData, setEmptyPatologiaData] = useState<Patologia>({
+        chave: "",
+        nomePatologia: "",
+        causador: "",
+        descricao: "",
+        diagnostico: "",
+        prevalencia: {
+            animal: {
+                cachorro: false,
+                gato: false,
+            },
+            regiao: {
+                norte: false,
+                nordeste: false,
+                centrooeste: false,
+                sudeste: false,
+                sul: false,
+            },
+        },
+        tratamento: "",
+        prevencao: "",
+        prognostico: "",
+        sintomas: [""],
+    });
+    const [caoData, setCaoData] = useState(false);
+
+    // Estado de Modificação
+    const [modificando, setModificando] = useState(false);
 
     // Valor Busca e estado
-    const [busca, setBusca] = useState<Sintoma[]>();
+    const [buscaSintoma, setBuscaSintoma] = useState<Sintoma[]>();
+    const [buscaPatologia, setBuscaPatologia] = useState<Patologia[]>();
     const [estaBuscando, setEstaBuscando] = useState(false);
 
     // Leitura de Dados
     const [sintomas, setSintomas] = useState<Sintoma[]>();
     const [patologias, setPatologias] = useState<Patologia[]>();
 
+    // Toast
+    const toast = useToast();
+
     useEffect(() => {
         const refSintomas = database.ref("sintomas");
+        const refPatologias = database.ref("patologias");
 
         refSintomas.on("value", (resultado) => {
             const resultadoSintoma = Object.entries<Sintoma>(
@@ -109,8 +144,39 @@ export default function Test() {
                     nomeSintoma: valor.nomeSintoma,
                 };
             });
-
             setSintomas(resultadoSintoma);
+        });
+
+        refPatologias.on("value", (resultado) => {
+            const resultadoPatologia = Object.entries<Patologia>(
+                resultado.val() ?? {}
+            ).map(([chave, valor]) => {
+                return {
+                    chave: chave,
+                    nomePatologia: valor.nomePatologia,
+                    causador: valor.causador,
+                    descricao: valor.descricao,
+                    diagnostico: valor.diagnostico,
+                    prevalencia: {
+                        animal: {
+                            cachorro: valor.prevalencia.animal.cachorro,
+                            gato: valor.prevalencia.animal.gato,
+                        },
+                        regiao: {
+                            norte: valor.prevalencia.regiao.norte,
+                            nordeste: valor.prevalencia.regiao.nordeste,
+                            centrooeste: valor.prevalencia.regiao.centrooeste,
+                            sudeste: valor.prevalencia.regiao.sudeste,
+                            sul: valor.prevalencia.regiao.sul,
+                        },
+                    },
+                    tratamento: valor.tratamento,
+                    prevencao: valor.prevencao,
+                    prognostico: valor.prognostico,
+                    sintomas: valor.sintomas,
+                };
+            });
+            setPatologias(resultadoPatologia);
         });
     }, []);
 
@@ -121,6 +187,13 @@ export default function Test() {
             nomeSintoma,
         };
         ref.push(dados);
+        toast({
+            title: "Sintoma criado",
+            description: "O sintoma foi criado no banco de dados com sucesso.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+        });
         setNomeSintoma("");
     }
     function createPathologyData(event: FormEvent) {
@@ -128,31 +201,117 @@ export default function Test() {
         const ref = database.ref("patologias");
         const dados = patologiaData;
         ref.push(dados);
+        toast({
+            title: "Patologia criada",
+            description:
+                "A patologia foi criada no banco de dados com sucesso.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+        });
+        setPatologiaData(emptyPatologiaData);
     }
 
-    function searchData(event: FormEvent<HTMLInputElement>) {
+    function searchSymptomData(event: FormEvent<HTMLInputElement>) {
         const palavra = event.currentTarget.value;
-
         if (palavra.length > 0) {
             setEstaBuscando(true);
-
             const dados: any[] = [];
-
             sintomas?.map((sintoma) => {
                 const regra = new RegExp(event.currentTarget.value, "gi");
                 if (regra.test(sintoma.nomeSintoma)) {
                     dados.push(sintoma);
                 }
             });
-
-            setBusca(dados);
+            setBuscaSintoma(dados);
         } else {
             setEstaBuscando(false);
         }
     }
 
-    function deleteData(key: string) {
+    function searchDiseaseData(event: FormEvent<HTMLInputElement>) {
+        const palavra = event.currentTarget.value;
+        if (palavra.length > 0) {
+            setEstaBuscando(true);
+            const dados: any[] = [];
+            patologias?.map((patologia) => {
+                const regra = new RegExp(event.currentTarget.value, "gi");
+                if (regra.test(patologia.nomePatologia)) {
+                    dados.push(patologia);
+                }
+            });
+            setBuscaPatologia(dados);
+        } else {
+            setEstaBuscando(false);
+        }
+    }
+
+    function editDiseaseData(patologia: Patologia) {
+        setModificando(true);
+        setChave(patologia.chave);
+        setCaoData(patologia.prevalencia.animal.cachorro)
+        setPatologiaData(patologia);
+    }
+
+    function updateDiseaseData() {
+        const ref = database.ref("patologias/");
+        const dados = {
+            chave: chave,
+            nomePatologia: patologiaData.nomePatologia,
+            causador: patologiaData.causador,
+            descricao: patologiaData.descricao,
+            diagnostico: patologiaData.diagnostico,
+            prevalencia: {
+                animal: {
+                    cachorro: patologiaData.prevalencia.animal.cachorro,
+                    gato: patologiaData.prevalencia.animal.gato,
+                },
+                regiao: {
+                    norte: patologiaData.prevalencia.regiao.norte,
+                    nordeste: patologiaData.prevalencia.regiao.nordeste,
+                    centrooeste: patologiaData.prevalencia.regiao.centrooeste,
+                    sudeste: patologiaData.prevalencia.regiao.sudeste,
+                    sul: patologiaData.prevalencia.regiao.sul,
+                },
+            },
+            tratamento: patologiaData.tratamento,
+            prevencao: patologiaData.prevencao,
+            prognostico: patologiaData.prognostico,
+            sintomas: patologiaData.sintomas,
+        }
+        ref.child(chave).update(dados);
+        toast({
+            title: "Patologia editada",
+            description:
+                "A patologia foi editada no banco de dados com sucesso.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+        });
+        setPatologiaData(emptyPatologiaData);
+        setModificando(false);
+    }
+
+    function deleteSymptomData(key: string) {
         const referencia = database.ref(`sintomas/${key}`).remove();
+        toast({
+            title: "Sintoma deletado",
+            description: "Sintoma foi deletado com sucesso.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+        });
+    }
+
+    function deleteDiseaseData(key: string) {
+        const referencia = database.ref(`patologias/${key}`).remove();
+        toast({
+            title: "Patologia deletada",
+            description: "Patologia foi deletada com sucesso.",
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+        });
     }
 
     return (
@@ -207,9 +366,8 @@ export default function Test() {
                                     p="6"
                                     rounded="md"
                                     bg="lightgray"
-                                    maxHeight={"70vh"}
-                                    overflow={"auto"}
-                                    height={"70vh"}
+                                    maxHeight={"fit-content"}
+                                    width={"100%"}
                                     borderRadius={"0.8rem"}
                                     display={"block"}
                                 >
@@ -231,14 +389,13 @@ export default function Test() {
                                             placeholder="Nome da Patologia"
                                             value={patologiaData.nomePatologia}
                                             required
-                                            onChange={(e) => {
-                                                console.log(patologiaData),
-                                                    setPatologiaData({
-                                                        ...patologiaData,
-                                                        nomePatologia:
-                                                            e.target.value,
-                                                    });
-                                            }}
+                                            onChange={(e) =>
+                                                setPatologiaData({
+                                                    ...patologiaData,
+                                                    nomePatologia:
+                                                        e.target.value,
+                                                })
+                                            }
                                         />
                                         <Textarea
                                             className="mt-2"
@@ -279,93 +436,330 @@ export default function Test() {
                                                 })
                                             }
                                         />
-
-                                        {/* checkbox */}
-                                        <CheckboxGroup
-                                            colorScheme="green"
-                                            defaultValue={[]}
-                                        >
-                                            <Stack
-                                                paddingTop={"5px"}
-                                                spacing={[1, 5]}
-                                                direction={["column", "row"]}
-                                            >
+                                        <Card marginTop={"2"} bg={"lightgray"}>
+                                            <CardBody>
                                                 <Text
-                                                    color={"white"}
+                                                    fontSize={"xl"}
+                                                    textColor={"white"}
                                                     fontWeight={"bold"}
                                                 >
-                                                    Selecione Animal:{" "}
+                                                    Prevalencia
                                                 </Text>
-                                                <Checkbox
-                                                    name="cachorro"
-                                                    value="cachorro"
-                                                    defaultChecked
-                                                    isChecked={
-                                                        patologiaData
-                                                            .prevalencia.animal
-                                                            .cachorro
-                                                    }
-                                                    onChange={(e) =>
-                                                        setPatologiaData({
-                                                            ...patologiaData,
-                                                            prevalencia: {
-                                                                ...patologiaData.prevalencia,
-                                                                animal: {
-                                                                    ...patologiaData
-                                                                        .prevalencia
-                                                                        .animal,
-                                                                    cachorro:
-                                                                        e.target
-                                                                            .checked,
-                                                                },
-                                                            },
-                                                        })
-                                                    }
-                                                >
-                                                    <Text
-                                                        color={"white"}
-                                                        fontWeight={"medium"}
-                                                    >
-                                                        Cachorro
-                                                    </Text>
-                                                </Checkbox>
-                                                <Checkbox
-                                                    name="gato"
-                                                    value="gato"
-                                                    defaultChecked
+                                                <CheckboxGroup
                                                     colorScheme="green"
-                                                    isChecked={
-                                                        patologiaData
-                                                            .prevalencia.animal
-                                                            .gato
-                                                    }
-                                                    onChange={(e) =>
-                                                        setPatologiaData({
-                                                            ...patologiaData,
-                                                            prevalencia: {
-                                                                ...patologiaData.prevalencia,
-                                                                animal: {
-                                                                    ...patologiaData
-                                                                        .prevalencia
-                                                                        .animal,
-                                                                    gato: e
-                                                                        .target
-                                                                        .checked,
-                                                                },
-                                                            },
-                                                        })
-                                                    }
+                                                    defaultValue={[]}
                                                 >
-                                                    <Text
-                                                        color={"white"}
-                                                        fontWeight={"medium"}
+                                                    <Stack
+                                                        paddingTop={"5px"}
+                                                        spacing={[1, 5]}
+                                                        direction={[
+                                                            "column",
+                                                            "row",
+                                                        ]}
                                                     >
-                                                        Gato
-                                                    </Text>
-                                                </Checkbox>
-                                            </Stack>
-                                        </CheckboxGroup>
-                                        {/* fim checkbox */}
+                                                        <Text
+                                                            color={"white"}
+                                                            fontWeight={"bold"}
+                                                        >
+                                                            Animal:{" "}
+                                                        </Text>
+                                                        <Checkbox
+                                                            name="cachorro"
+                                                            value="cachorro"
+                                                            isChecked={
+                                                                caoData
+                                                            }
+                                                            
+                                                            onChange={(e) =>
+                                                                setPatologiaData(
+                                                                    {
+                                                                        ...patologiaData,
+                                                                        prevalencia:
+                                                                        {
+                                                                            ...patologiaData.prevalencia,
+                                                                            animal: {
+                                                                                ...patologiaData
+                                                                                    .prevalencia
+                                                                                    .animal,
+                                                                                cachorro:
+                                                                                    e
+                                                                                        .target
+                                                                                        .checked,
+                                                                            },
+                                                                        },
+                                                                    }
+                                                                )
+                                                            }
+                                                        >
+                                                            <Text
+                                                                color={"white"}
+                                                                fontWeight={
+                                                                    "medium"
+                                                                }
+                                                            >
+                                                                Cachorro
+                                                            </Text>
+                                                        </Checkbox>
+                                                        <Checkbox
+                                                            name="gato"
+                                                            value="gato"
+                                                            colorScheme="green"
+                                                            isChecked={
+                                                                patologiaData
+                                                                    .prevalencia
+                                                                    .animal.gato
+                                                            }
+                                                            onChange={(e) =>
+                                                                setPatologiaData(
+                                                                    {
+                                                                        ...patologiaData,
+                                                                        prevalencia:
+                                                                        {
+                                                                            ...patologiaData.prevalencia,
+                                                                            animal: {
+                                                                                ...patologiaData
+                                                                                    .prevalencia
+                                                                                    .animal,
+                                                                                gato: e
+                                                                                    .target
+                                                                                    .checked,
+                                                                            },
+                                                                        },
+                                                                    }
+                                                                )
+                                                            }
+                                                        >
+                                                            <Text
+                                                                color={"white"}
+                                                                fontWeight={
+                                                                    "medium"
+                                                                }
+                                                            >
+                                                                Gato
+                                                            </Text>
+                                                        </Checkbox>
+                                                    </Stack>
+                                                </CheckboxGroup>
+                                                <CheckboxGroup
+                                                    colorScheme="green"
+                                                    defaultValue={[]}
+                                                >
+                                                    <Stack
+                                                        paddingTop={"5px"}
+                                                        spacing={[1, 2]}
+                                                        direction={[
+                                                            "column",
+                                                            "column",
+                                                        ]}
+                                                    >
+                                                        <Text
+                                                            color={"white"}
+                                                            fontWeight={"bold"}
+                                                        >
+                                                            Regiao:{" "}
+                                                        </Text>
+                                                        <Checkbox
+                                                            name="norte"
+                                                            value="norte"
+                                                            defaultChecked
+                                                            isChecked={
+                                                                patologiaData
+                                                                    .prevalencia
+                                                                    .regiao
+                                                                    .norte
+                                                            }
+                                                            onChange={(e) =>
+                                                                setPatologiaData(
+                                                                    {
+                                                                        ...patologiaData,
+                                                                        prevalencia:
+                                                                        {
+                                                                            ...patologiaData.prevalencia,
+                                                                            regiao: {
+                                                                                ...patologiaData
+                                                                                    .prevalencia
+                                                                                    .regiao,
+                                                                                norte: e
+                                                                                    .target
+                                                                                    .checked,
+                                                                            },
+                                                                        },
+                                                                    }
+                                                                )
+                                                            }
+                                                        >
+                                                            <Text
+                                                                color={"white"}
+                                                                fontWeight={
+                                                                    "medium"
+                                                                }
+                                                            >
+                                                                Região Norte
+                                                            </Text>
+                                                        </Checkbox>
+                                                        <Checkbox
+                                                            name="nordeste"
+                                                            value="nordeste"
+                                                            defaultChecked
+                                                            isChecked={
+                                                                patologiaData
+                                                                    .prevalencia
+                                                                    .regiao
+                                                                    .nordeste
+                                                            }
+                                                            onChange={(e) =>
+                                                                setPatologiaData(
+                                                                    {
+                                                                        ...patologiaData,
+                                                                        prevalencia:
+                                                                        {
+                                                                            ...patologiaData.prevalencia,
+                                                                            regiao: {
+                                                                                ...patologiaData
+                                                                                    .prevalencia
+                                                                                    .regiao,
+                                                                                nordeste:
+                                                                                    e
+                                                                                        .target
+                                                                                        .checked,
+                                                                            },
+                                                                        },
+                                                                    }
+                                                                )
+                                                            }
+                                                        >
+                                                            <Text
+                                                                color={"white"}
+                                                                fontWeight={
+                                                                    "medium"
+                                                                }
+                                                            >
+                                                                Região Nordeste
+                                                            </Text>
+                                                        </Checkbox>
+                                                        <Checkbox
+                                                            name="centrooeste"
+                                                            value="centrooeste"
+                                                            defaultChecked
+                                                            isChecked={
+                                                                patologiaData
+                                                                    .prevalencia
+                                                                    .regiao
+                                                                    .centrooeste
+                                                            }
+                                                            onChange={(e) =>
+                                                                setPatologiaData(
+                                                                    {
+                                                                        ...patologiaData,
+                                                                        prevalencia:
+                                                                        {
+                                                                            ...patologiaData.prevalencia,
+                                                                            regiao: {
+                                                                                ...patologiaData
+                                                                                    .prevalencia
+                                                                                    .regiao,
+                                                                                centrooeste:
+                                                                                    e
+                                                                                        .target
+                                                                                        .checked,
+                                                                            },
+                                                                        },
+                                                                    }
+                                                                )
+                                                            }
+                                                        >
+                                                            <Text
+                                                                color={"white"}
+                                                                fontWeight={
+                                                                    "medium"
+                                                                }
+                                                            >
+                                                                Região
+                                                                Centro-Oeste
+                                                            </Text>
+                                                        </Checkbox>
+                                                        <Checkbox
+                                                            name="sudeste"
+                                                            value="sudeste"
+                                                            defaultChecked
+                                                            isChecked={
+                                                                patologiaData
+                                                                    .prevalencia
+                                                                    .regiao
+                                                                    .sudeste
+                                                            }
+                                                            onChange={(e) =>
+                                                                setPatologiaData(
+                                                                    {
+                                                                        ...patologiaData,
+                                                                        prevalencia:
+                                                                        {
+                                                                            ...patologiaData.prevalencia,
+                                                                            regiao: {
+                                                                                ...patologiaData
+                                                                                    .prevalencia
+                                                                                    .regiao,
+                                                                                sudeste:
+                                                                                    e
+                                                                                        .target
+                                                                                        .checked,
+                                                                            },
+                                                                        },
+                                                                    }
+                                                                )
+                                                            }
+                                                        >
+                                                            <Text
+                                                                color={"white"}
+                                                                fontWeight={
+                                                                    "medium"
+                                                                }
+                                                            >
+                                                                Região Sudeste
+                                                            </Text>
+                                                        </Checkbox>
+                                                        <Checkbox
+                                                            name="sul"
+                                                            value="sul"
+                                                            defaultChecked
+                                                            isChecked={
+                                                                patologiaData
+                                                                    .prevalencia
+                                                                    .regiao.sul
+                                                            }
+                                                            onChange={(e) =>
+                                                                setPatologiaData(
+                                                                    {
+                                                                        ...patologiaData,
+                                                                        prevalencia:
+                                                                        {
+                                                                            ...patologiaData.prevalencia,
+                                                                            regiao: {
+                                                                                ...patologiaData
+                                                                                    .prevalencia
+                                                                                    .regiao,
+                                                                                sul: e
+                                                                                    .target
+                                                                                    .checked,
+                                                                            },
+                                                                        },
+                                                                    }
+                                                                )
+                                                            }
+                                                        >
+                                                            <Text
+                                                                color={"white"}
+                                                                fontWeight={
+                                                                    "medium"
+                                                                }
+                                                            >
+                                                                Região Sul
+                                                            </Text>
+                                                        </Checkbox>
+                                                    </Stack>
+                                                </CheckboxGroup>
+                                            </CardBody>
+                                        </Card>
                                         <Textarea
                                             className="mt-2"
                                             backgroundColor={"whitesmoke"}
@@ -405,17 +799,31 @@ export default function Test() {
                                                 })
                                             }
                                         />
-                                        <Button
-                                            colorScheme="teal"
-                                            margin={"10px 50px"}
-                                            variant={"outline"}
-                                            bg={"white"}
-                                            borderRadius={"0.8rem"}
-                                            type="button"
-                                            onClick={createPathologyData}
-                                        >
-                                            Inserir
-                                        </Button>
+                                        {modificando ? (
+                                            <Button
+                                                colorScheme="teal"
+                                                margin={"10px 50px"}
+                                                variant={"outline"}
+                                                bg={"white"}
+                                                borderRadius={"0.8rem"}
+                                                type="button"
+                                                onClick={updateDiseaseData}
+                                            >
+                                                Atualizar
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                colorScheme="teal"
+                                                margin={"10px 50px"}
+                                                variant={"outline"}
+                                                bg={"white"}
+                                                borderRadius={"0.8rem"}
+                                                type="button"
+                                                onClick={createPathologyData}
+                                            >
+                                                Inserir
+                                            </Button>
+                                        )}
                                     </FormControl>
                                 </Box>
                                 <Box
@@ -436,7 +844,7 @@ export default function Test() {
                                         type="text"
                                         placeholder="Buscar"
                                         bg={"white"}
-                                        onChange={searchData}
+                                        onChange={searchDiseaseData}
                                     />
                                     <SimpleGrid
                                         display={"flex"}
@@ -446,54 +854,93 @@ export default function Test() {
                                         gap={2}
                                     >
                                         {estaBuscando
-                                            ? busca?.map((sintoma) => {
+                                            ? buscaPatologia?.map(
+                                                (patologia) => {
+                                                    return (
+                                                        <div
+                                                            key={
+                                                                patologia.chave
+                                                            }
+                                                            className={
+                                                                styles.symptomUnchecked
+                                                            }
+                                                        >
+                                                            <Text>
+                                                                {
+                                                                    patologia.nomePatologia
+                                                                }{" "}
+                                                                <SearchIcon/>
+                                                                <EditIcon
+                                                                    marginLeft={
+                                                                        "2px"
+                                                                    }
+                                                                    marginRight={
+                                                                        "4px"
+                                                                    }
+                                                                    onClick={() =>
+                                                                        editDiseaseData(
+                                                                            patologia
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <DeleteIcon
+                                                                    cursor={
+                                                                        "pointer"
+                                                                    }
+                                                                    onClick={() =>
+                                                                        deleteDiseaseData(
+                                                                            patologia.chave
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </Text>
+                                                        </div>
+                                                    );
+                                                }
+                                            )
+                                            : patologias?.map((patologia) => {
                                                 return (
                                                     <div
-                                                        key={sintoma.chave}
+                                                        key={patologia.chave}
                                                         className={
                                                             styles.symptomUnchecked
                                                         }
                                                     >
                                                         <Text>
                                                             {
-                                                                sintoma.nomeSintoma
+                                                                patologia.nomePatologia
                                                             }{" "}
-                                                            <span
+                                                            <SearchIcon
+                                                                cursor={'pointer'}
+                                                                marginLeft={
+                                                                    "2px"
+                                                                }
+                                                                onClick={()=>{}}
+                                                            />
+                                                            <EditIcon
+                                                                cursor={'pointer'}
+                                                                marginLeft={
+                                                                    "2px"
+                                                                }
+                                                                marginRight={
+                                                                    "4px"
+                                                                }
                                                                 onClick={() =>
-                                                                    deleteData(
-                                                                        sintoma.chave
+                                                                    editDiseaseData(
+                                                                        patologia
                                                                     )
                                                                 }
-                                                                className="text-red-500 cursor-pointer"
-                                                            >
-                                                                X
-                                                            </span>
-                                                        </Text>
-                                                    </div>
-                                                );
-                                            })
-                                            : sintomas?.map((sintoma) => {
-                                                return (
-                                                    <div
-                                                        key={sintoma.chave}
-                                                        className={
-                                                            styles.symptomUnchecked
-                                                        }
-                                                    >
-                                                        <Text>
-                                                            {
-                                                                sintoma.nomeSintoma
-                                                            }{" "}
-                                                            <span
+                                                            />
+                                                            <DeleteIcon
+                                                                cursor={
+                                                                    "pointer"
+                                                                }
                                                                 onClick={() =>
-                                                                    deleteData(
-                                                                        sintoma.chave
+                                                                    deleteDiseaseData(
+                                                                        patologia.chave
                                                                     )
                                                                 }
-                                                                className="text-red-500 cursor-pointer"
-                                                            >
-                                                                X
-                                                            </span>
+                                                            />
                                                         </Text>
                                                     </div>
                                                 );
@@ -579,7 +1026,7 @@ export default function Test() {
                                         type="text"
                                         placeholder="Buscar"
                                         bg={"white"}
-                                        onChange={searchData}
+                                        onChange={searchSymptomData}
                                     />
                                     <SimpleGrid
                                         display={"flex"}
@@ -589,7 +1036,7 @@ export default function Test() {
                                         gap={2}
                                     >
                                         {estaBuscando
-                                            ? busca?.map((sintoma) => {
+                                            ? buscaSintoma?.map((sintoma) => {
                                                 return (
                                                     <div
                                                         key={sintoma.chave}
@@ -601,16 +1048,16 @@ export default function Test() {
                                                             {
                                                                 sintoma.nomeSintoma
                                                             }{" "}
-                                                            <span
+                                                            <DeleteIcon
+                                                                cursor={
+                                                                    "pointer"
+                                                                }
                                                                 onClick={() =>
-                                                                    deleteData(
+                                                                    deleteSymptomData(
                                                                         sintoma.chave
                                                                     )
                                                                 }
-                                                                className="text-red-500 cursor-pointer"
-                                                            >
-                                                                X
-                                                            </span>
+                                                            />
                                                         </Text>
                                                     </div>
                                                 );
@@ -627,16 +1074,16 @@ export default function Test() {
                                                             {
                                                                 sintoma.nomeSintoma
                                                             }{" "}
-                                                            <span
+                                                            <DeleteIcon
+                                                                cursor={
+                                                                    "pointer"
+                                                                }
                                                                 onClick={() =>
-                                                                    deleteData(
+                                                                    deleteSymptomData(
                                                                         sintoma.chave
                                                                     )
                                                                 }
-                                                                className="text-red-500 cursor-pointer"
-                                                            >
-                                                                X
-                                                            </span>
+                                                            />
                                                         </Text>
                                                     </div>
                                                 );
