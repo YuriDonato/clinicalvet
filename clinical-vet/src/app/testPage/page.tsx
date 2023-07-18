@@ -23,10 +23,28 @@ import {
     CheckboxGroup,
     Stack,
     Text,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
-import { EditIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
+import { EditIcon, DeleteIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
+import { PiCatLight, PiDogLight } from "react-icons/pi"
+import {IoIosCheckmarkCircleOutline, IoIosCloseCircleOutline} from "react-icons/io"
+import {
+    Drawer,
+    DrawerBody,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
+  } from '@chakra-ui/react'
+  import {
+    InputGroup,
+    InputLeftAddon,
+    InputRightAddon,
+    Select,
+  } from "@chakra-ui/react";
 
 import { database } from "../services/firebase";
 
@@ -214,6 +232,9 @@ export default function Test() {
     // Toast
     const toast = useToast();
 
+    // Drawer de Informação da Doença
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     useEffect(() => {
         const refSintomas = database.ref("sintomas");
         const refPatologias = database.ref("patologias");
@@ -365,6 +386,9 @@ export default function Test() {
             sintomas: patologiaData.sintomas,
         }
         ref.child(chave).update(dados);
+        setPatologiaData(emptyPatologiaData);
+        uncheckAll()
+        setModificando(false);
         toast({
             title: "Patologia editada",
             description:
@@ -373,9 +397,6 @@ export default function Test() {
             duration: 4000,
             isClosable: true,
         });
-        setPatologiaData(emptyPatologiaData);
-        uncheckAll()
-        setModificando(false);
     }
 
     function deleteSymptomData(key: string) {
@@ -399,6 +420,8 @@ export default function Test() {
             isClosable: true,
         });
     }
+
+
 
     return (
         <div>
@@ -972,6 +995,50 @@ export default function Test() {
                                                             styles.symptomUnchecked
                                                         }
                                                     >
+                                                        
+                                                        <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+                                                            <DrawerOverlay />
+                                                            
+                                                            <DrawerContent>
+                                                                <DrawerCloseButton/>
+                                                                <DrawerHeader borderBottomWidth={'1px'}>
+                                                                    
+                                                                    {patologia.nomePatologia}
+                                                                </DrawerHeader>
+                                                                <DrawerBody>
+                                                                    <Stack>
+                                                                        <Box>
+                                                                            <Text>
+                                                                                {patologia.descricao}
+                                                                            </Text>
+                                                                            <Text>
+                                                                                {patologia.causador}
+                                                                            </Text>
+                                                                            <Text>
+                                                                                {patologia.diagnostico}
+                                                                            </Text>
+                                                                            <Text fontWeight={'bold'} display={'flex'} alignItems={'center'} alignContent={'space-between'}>Animais: {patologia.prevalencia.animal.cachorro ? <PiCatLight/> : <></>} {patologia.prevalencia.animal.gato ? <PiDogLight/> : <></>} </Text>
+                                                                            <Text fontWeight={'bold'}>Regiao de prevalencia: </Text>
+                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.norte ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Norte</Text>
+                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.nordeste ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Nordeste</Text>
+                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.centrooeste ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Centro-Oeste</Text>
+                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.sudeste ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Sudoeste</Text>
+                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.sul ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Sul</Text>
+                                                                            <Text>
+                                                                                {patologia.tratamento}
+                                                                            </Text>
+                                                                            <Text>
+                                                                                {patologia.prevencao}
+                                                                            </Text>
+                                                                            <Text>
+                                                                                
+                                                                                {patologia.prognostico}
+                                                                            </Text>
+                                                                        </Box>
+                                                                    </Stack>
+                                                                </DrawerBody>
+                                                            </DrawerContent>
+                                                        </Drawer>
                                                         <Text>
                                                             {
                                                                 patologia.nomePatologia
@@ -981,7 +1048,7 @@ export default function Test() {
                                                                 marginLeft={
                                                                     "2px"
                                                                 }
-                                                                onClick={() => { }}
+                                                                onClick={onOpen}
                                                             />
                                                             <EditIcon
                                                                 cursor={'pointer'}
