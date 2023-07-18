@@ -114,7 +114,90 @@ export default function Test() {
         prognostico: "",
         sintomas: [""],
     });
-    const [caoData, setCaoData] = useState(false);
+    // Valores patologia para checkbox
+    const [cachorro, setCachorro] = useState("semcachorro");
+    const [gato, setGato] = useState("semgato");
+    const [norte, setNorte] = useState("semnorte");
+    const [nordeste, setNordeste] = useState("semnordeste");
+    const [centrooeste, setCentrooeste] = useState("semcentrooeste");
+    const [sudeste, setSudeste] = useState("semsudeste");
+    const [sul, setSul] = useState("semsul");
+
+    function uncheckAll() {
+        setCachorro("semcachorro")
+        setGato("semgato")
+        setNorte("semnorte")
+        setNordeste("semnordeste")
+        setCentrooeste("semcentrooeste")
+        setSudeste("semsudeste")
+        setSul("semsul")
+        setPatologiaData(
+            {
+                ...patologiaData,
+                prevalencia:
+                {
+                    ...patologiaData.prevalencia,
+                    animal: {
+                        ...patologiaData
+                            .prevalencia
+                            .animal,
+                        cachorro: false,
+                        gato: false,
+                    },
+                    regiao: {
+                        ...patologiaData.prevalencia.regiao,
+                        norte: false,
+                        nordeste: false,
+                        centrooeste: false,
+                        sudeste: false,
+                        sul: false,
+                    }
+                },
+            }
+        )
+    }
+    function checkAll() {
+        setCachorro("cachorro")
+        setGato("gato")
+        setNorte("norte")
+        setNordeste("nordeste")
+        setCentrooeste("centrooeste")
+        setSudeste("sudeste")
+        setSul("sul")
+        setPatologiaData(
+            {
+                ...patologiaData,
+                prevalencia:
+                {
+                    ...patologiaData.prevalencia,
+                    animal: {
+                        ...patologiaData
+                            .prevalencia
+                            .animal,
+                        cachorro: true,
+                        gato: true,
+                    },
+                    regiao: {
+                        ...patologiaData.prevalencia.regiao,
+                        norte: true,
+                        nordeste: true,
+                        centrooeste: true,
+                        sudeste: true,
+                        sul: true,
+                    }
+                },
+            }
+        )
+    }
+    function checkSpecific(patologia: Patologia) {
+        setCachorro(patologia.prevalencia.animal.cachorro ? "cachorro" : "semcachorro");
+        setGato(patologia.prevalencia.animal.gato ? "gato" : "semgato");
+        setNorte(patologia.prevalencia.regiao.norte ? "norte" : "semnorte")
+        setNordeste(patologia.prevalencia.regiao.nordeste ? "nordeste" : "semnordeste")
+        setCentrooeste(patologia.prevalencia.regiao.centrooeste ? "centrooeste" : "semcentrooeste")
+        setSudeste(patologia.prevalencia.regiao.sudeste ? "sudeste" : "semsudeste")
+        setSul(patologia.prevalencia.regiao.sul ? "sul" : "semsul")
+    }
 
     // Estado de Modificação
     const [modificando, setModificando] = useState(false);
@@ -196,6 +279,7 @@ export default function Test() {
         });
         setNomeSintoma("");
     }
+
     function createPathologyData(event: FormEvent) {
         event.preventDefault();
         const ref = database.ref("patologias");
@@ -209,6 +293,7 @@ export default function Test() {
             duration: 4000,
             isClosable: true,
         });
+        uncheckAll()
         setPatologiaData(emptyPatologiaData);
     }
 
@@ -249,7 +334,7 @@ export default function Test() {
     function editDiseaseData(patologia: Patologia) {
         setModificando(true);
         setChave(patologia.chave);
-        setCaoData(patologia.prevalencia.animal.cachorro)
+        checkSpecific(patologia);
         setPatologiaData(patologia);
     }
 
@@ -289,6 +374,7 @@ export default function Test() {
             isClosable: true,
         });
         setPatologiaData(emptyPatologiaData);
+        uncheckAll()
         setModificando(false);
     }
 
@@ -447,7 +533,7 @@ export default function Test() {
                                                 </Text>
                                                 <CheckboxGroup
                                                     colorScheme="green"
-                                                    defaultValue={[]}
+                                                    defaultValue={["cachorro","gato"]}
                                                 >
                                                     <Stack
                                                         paddingTop={"5px"}
@@ -465,12 +551,8 @@ export default function Test() {
                                                         </Text>
                                                         <Checkbox
                                                             name="cachorro"
-                                                            value="cachorro"
-                                                            isChecked={
-                                                                caoData
-                                                            }
-                                                            
-                                                            onChange={(e) =>
+                                                            value={cachorro}
+                                                            onChange={(e) => {
                                                                 setPatologiaData(
                                                                     {
                                                                         ...patologiaData,
@@ -489,6 +571,8 @@ export default function Test() {
                                                                         },
                                                                     }
                                                                 )
+                                                                checkSpecific(patologiaData)
+                                                            }
                                                             }
                                                         >
                                                             <Text
@@ -502,7 +586,7 @@ export default function Test() {
                                                         </Checkbox>
                                                         <Checkbox
                                                             name="gato"
-                                                            value="gato"
+                                                            value={gato}
                                                             colorScheme="green"
                                                             isChecked={
                                                                 patologiaData
@@ -510,7 +594,7 @@ export default function Test() {
                                                                     .animal.gato
                                                             }
                                                             onChange={(e) =>
-                                                                setPatologiaData(
+                                                                {setPatologiaData(
                                                                     {
                                                                         ...patologiaData,
                                                                         prevalencia:
@@ -527,6 +611,8 @@ export default function Test() {
                                                                         },
                                                                     }
                                                                 )
+                                                                checkSpecific(patologiaData)
+                                                            }
                                                             }
                                                         >
                                                             <Text
@@ -542,7 +628,7 @@ export default function Test() {
                                                 </CheckboxGroup>
                                                 <CheckboxGroup
                                                     colorScheme="green"
-                                                    defaultValue={[]}
+                                                    defaultValue={["norte","nordeste","centrooeste","sudeste","sul"]}
                                                 >
                                                     <Stack
                                                         paddingTop={"5px"}
@@ -560,16 +646,9 @@ export default function Test() {
                                                         </Text>
                                                         <Checkbox
                                                             name="norte"
-                                                            value="norte"
-                                                            defaultChecked
-                                                            isChecked={
-                                                                patologiaData
-                                                                    .prevalencia
-                                                                    .regiao
-                                                                    .norte
-                                                            }
+                                                            value={norte}
                                                             onChange={(e) =>
-                                                                setPatologiaData(
+                                                                {setPatologiaData(
                                                                     {
                                                                         ...patologiaData,
                                                                         prevalencia:
@@ -586,6 +665,8 @@ export default function Test() {
                                                                         },
                                                                     }
                                                                 )
+                                                                checkSpecific(patologiaData)
+                                                            }
                                                             }
                                                         >
                                                             <Text
@@ -599,16 +680,9 @@ export default function Test() {
                                                         </Checkbox>
                                                         <Checkbox
                                                             name="nordeste"
-                                                            value="nordeste"
-                                                            defaultChecked
-                                                            isChecked={
-                                                                patologiaData
-                                                                    .prevalencia
-                                                                    .regiao
-                                                                    .nordeste
-                                                            }
+                                                            value={nordeste}
                                                             onChange={(e) =>
-                                                                setPatologiaData(
+                                                                {setPatologiaData(
                                                                     {
                                                                         ...patologiaData,
                                                                         prevalencia:
@@ -626,6 +700,8 @@ export default function Test() {
                                                                         },
                                                                     }
                                                                 )
+                                                                checkSpecific(patologiaData)
+                                                            }
                                                             }
                                                         >
                                                             <Text
@@ -639,16 +715,9 @@ export default function Test() {
                                                         </Checkbox>
                                                         <Checkbox
                                                             name="centrooeste"
-                                                            value="centrooeste"
-                                                            defaultChecked
-                                                            isChecked={
-                                                                patologiaData
-                                                                    .prevalencia
-                                                                    .regiao
-                                                                    .centrooeste
-                                                            }
+                                                            value={centrooeste}
                                                             onChange={(e) =>
-                                                                setPatologiaData(
+                                                                {setPatologiaData(
                                                                     {
                                                                         ...patologiaData,
                                                                         prevalencia:
@@ -666,6 +735,8 @@ export default function Test() {
                                                                         },
                                                                     }
                                                                 )
+                                                                checkSpecific(patologiaData)
+                                                            }
                                                             }
                                                         >
                                                             <Text
@@ -680,16 +751,9 @@ export default function Test() {
                                                         </Checkbox>
                                                         <Checkbox
                                                             name="sudeste"
-                                                            value="sudeste"
-                                                            defaultChecked
-                                                            isChecked={
-                                                                patologiaData
-                                                                    .prevalencia
-                                                                    .regiao
-                                                                    .sudeste
-                                                            }
+                                                            value={sudeste}
                                                             onChange={(e) =>
-                                                                setPatologiaData(
+                                                                {setPatologiaData(
                                                                     {
                                                                         ...patologiaData,
                                                                         prevalencia:
@@ -707,6 +771,8 @@ export default function Test() {
                                                                         },
                                                                     }
                                                                 )
+                                                                checkSpecific(patologiaData)
+                                                            }
                                                             }
                                                         >
                                                             <Text
@@ -720,15 +786,9 @@ export default function Test() {
                                                         </Checkbox>
                                                         <Checkbox
                                                             name="sul"
-                                                            value="sul"
-                                                            defaultChecked
-                                                            isChecked={
-                                                                patologiaData
-                                                                    .prevalencia
-                                                                    .regiao.sul
-                                                            }
+                                                            value={sul}
                                                             onChange={(e) =>
-                                                                setPatologiaData(
+                                                                {setPatologiaData(
                                                                     {
                                                                         ...patologiaData,
                                                                         prevalencia:
@@ -745,6 +805,8 @@ export default function Test() {
                                                                         },
                                                                     }
                                                                 )
+                                                                checkSpecific(patologiaData)
+                                                            }
                                                             }
                                                         >
                                                             <Text
@@ -758,6 +820,10 @@ export default function Test() {
                                                         </Checkbox>
                                                     </Stack>
                                                 </CheckboxGroup>
+                                                <ButtonGroup marginTop={'10px'}>
+                                                <Button textColor={'white'} onClick={checkAll} >Marcar Tudo</Button>
+                                                <Button textColor={'white'} onClick={uncheckAll}>Desmarcar Tudo</Button>
+                                                </ButtonGroup>
                                             </CardBody>
                                         </Card>
                                         <Textarea
@@ -869,7 +935,7 @@ export default function Test() {
                                                                 {
                                                                     patologia.nomePatologia
                                                                 }{" "}
-                                                                <SearchIcon/>
+                                                                <SearchIcon />
                                                                 <EditIcon
                                                                     marginLeft={
                                                                         "2px"
@@ -915,7 +981,7 @@ export default function Test() {
                                                                 marginLeft={
                                                                     "2px"
                                                                 }
-                                                                onClick={()=>{}}
+                                                                onClick={() => { }}
                                                             />
                                                             <EditIcon
                                                                 cursor={'pointer'}
