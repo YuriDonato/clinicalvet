@@ -46,6 +46,9 @@ import {
     Select,
   } from "@chakra-ui/react";
 
+  import PatologiaDrawer from "../PatologiaDrawer/page";
+  import PatologiaCard from "../PatologiaCard/page";
+
 import { database } from "../services/firebase";
 
 type Patologia = {
@@ -233,7 +236,15 @@ export default function Test() {
     const toast = useToast();
 
     // Drawer de Informação da Doença
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+    function onOpen(){
+        setIsDrawerOpen(true);
+    }
+
+    function onClose(){
+        setIsDrawerOpen(false);
+    }
 
     useEffect(() => {
         const refSintomas = database.ref("sintomas");
@@ -995,61 +1006,11 @@ export default function Test() {
                                                             styles.symptomUnchecked
                                                         }
                                                     >
-                                                        
-                                                        <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-                                                            <DrawerOverlay />
-                                                            
-                                                            <DrawerContent>
-                                                                <DrawerCloseButton/>
-                                                                <DrawerHeader borderBottomWidth={'1px'}>
-                                                                    
-                                                                    {patologia.nomePatologia}
-                                                                </DrawerHeader>
-                                                                <DrawerBody>
-                                                                    <Stack>
-                                                                        <Box>
-                                                                            <Text>
-                                                                                {patologia.descricao}
-                                                                            </Text>
-                                                                            <Text>
-                                                                                {patologia.causador}
-                                                                            </Text>
-                                                                            <Text>
-                                                                                {patologia.diagnostico}
-                                                                            </Text>
-                                                                            <Text fontWeight={'bold'} display={'flex'} alignItems={'center'} alignContent={'space-between'}>Animais: {patologia.prevalencia.animal.cachorro ? <PiCatLight/> : <></>} {patologia.prevalencia.animal.gato ? <PiDogLight/> : <></>} </Text>
-                                                                            <Text fontWeight={'bold'}>Regiao de prevalencia: </Text>
-                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.norte ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Norte</Text>
-                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.nordeste ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Nordeste</Text>
-                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.centrooeste ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Centro-Oeste</Text>
-                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.sudeste ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Sudoeste</Text>
-                                                                            <Text display={'flex'} alignItems={'center'}>{patologia.prevalencia.regiao.sul ? <IoIosCheckmarkCircleOutline className="mr-2"/> : <IoIosCloseCircleOutline className="mr-2"/> }Região Sul</Text>
-                                                                            <Text>
-                                                                                {patologia.tratamento}
-                                                                            </Text>
-                                                                            <Text>
-                                                                                {patologia.prevencao}
-                                                                            </Text>
-                                                                            <Text>
-                                                                                
-                                                                                {patologia.prognostico}
-                                                                            </Text>
-                                                                        </Box>
-                                                                    </Stack>
-                                                                </DrawerBody>
-                                                            </DrawerContent>
-                                                        </Drawer>
                                                         <Text>
                                                             {
                                                                 patologia.nomePatologia
                                                             }{" "}
-                                                            <SearchIcon
-                                                                cursor={'pointer'}
-                                                                marginLeft={
-                                                                    "2px"
-                                                                }
-                                                                onClick={onOpen}
-                                                            />
+                                                            <PatologiaCard patologia={patologia}/>
                                                             <EditIcon
                                                                 cursor={'pointer'}
                                                                 marginLeft={
