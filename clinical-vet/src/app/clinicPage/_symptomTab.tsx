@@ -34,14 +34,18 @@ type Sintoma = {
     nomeSintoma: string;
 };
 
-const SymptomTab = () => {
+type SymptomTabProps ={
+    onChange: (selectedSymptoms: string[]) => void;
+};
+
+const SymptomTab = ({onChange}: SymptomTabProps) => {
     // Logica dos botoes principais
     const [showSymptoms, setShowSymptoms] = useState(false);
     const [showSelectedSymptoms, setShowSelectedSymptoms] = useState(false);
     var [style, setStyle] = useState("rotate-0");
     const [currentState, setCurrentState] = useState(false);
     const [keySymptomsSelecionados, setKeySymptomsSelecionados] = useState([""]);
-
+    
     const changeStyle = () => {
         if (currentState) {
             setStyle("rotate-0");

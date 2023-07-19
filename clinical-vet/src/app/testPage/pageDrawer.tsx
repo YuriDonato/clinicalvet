@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { PiCatLight, PiDogLight } from "react-icons/pi"
 import {IoIosCheckmarkCircleOutline, IoIosCloseCircleOutline} from "react-icons/io"
+import { useEffect, useState } from "react";
+import { database } from "../services/firebase";
 
 type Patologia = {
     chave: string;
@@ -37,13 +39,37 @@ type Patologia = {
     sintomas: string[];
 };
 
+type Sintoma = {
+    chave: string;
+    nomeSintoma: string;
+};
+
 type PatologiaDrawerProps = {
     isOpen: boolean;
     onClose: () => void;
     patologia: Patologia;
 }
 
+
 const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, patologia }) => {
+    const [sintomasKeys, setSintomasKeys] = useState<string[]>([])
+    const [sintomas, setSintomas] = useState<{ [key: string]: Sintoma }>({});
+
+    useEffect(() => {
+        const refSintomas = database.ref("sintomas");
+        refSintomas.on("value", (resultado) => {
+            const resultadoSintomas = resultado.val();
+            if (resultadoSintomas) {
+                setSintomas(resultadoSintomas);
+            }
+        });
+    }, []);
+
+    const sintomasNomes = patologia.sintomas
+        .map((chave) => sintomas[chave]?.nomeSintoma)
+        .filter((nomeSintoma) => nomeSintoma !== undefined);
+
+
     return (
         <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
             <DrawerOverlay />
@@ -118,8 +144,10 @@ const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, pato
                                 Região Sul
                             </Text>
                             <Text>{patologia.tratamento}</Text>
-                            <Text>{patologia.prevencao}</Text>
-                            <Text>{patologia.prognostico}</Text>
+                            <Text fontWeight={'bold'}>Sintomas: </Text>
+                            {sintomasNomes.map((nome) => (
+                                <Text key={nome}>{nome}</Text>
+                            ))}
                         </Box>
                     </Stack>
                 </DrawerBody>
@@ -127,5 +155,6 @@ const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, pato
         </Drawer>
     );
 };
+
 
 export default PatologiaDrawer;
