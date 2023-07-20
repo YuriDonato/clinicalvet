@@ -24,6 +24,7 @@ import {
     Stack,
     Text,
     useDisclosure,
+    Tag,
 } from "@chakra-ui/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
@@ -64,6 +65,8 @@ type Sintoma = {
 };
 
 export default function Test() {
+    //load
+    const [isLoading, setIsLoading] = useState(false);
     // Key
     const [chave, setChave] = useState("");
     // Valores Sintomas
@@ -91,7 +94,7 @@ export default function Test() {
         tratamento: "",
         prevencao: "",
         prognostico: "",
-        sintomas: [""],
+        sintomas: [],
     });
     const [emptyPatologiaData, setEmptyPatologiaData] = useState<Patologia>({
         chave: "",
@@ -115,7 +118,7 @@ export default function Test() {
         tratamento: "",
         prevencao: "",
         prognostico: "",
-        sintomas: [""],
+        sintomas: [],
     });
     // Valores patologia para checkbox
     const [cachorro, setCachorro] = useState("semcachorro");
@@ -211,7 +214,7 @@ export default function Test() {
     const [estaBuscando, setEstaBuscando] = useState(false);
 
     // Leitura de Dados
-    const [sintomas, setSintomas] = useState<Sintoma[]>();
+    const [sintomas, setSintomas] = useState<Sintoma[]>([]);
     const [patologias, setPatologias] = useState<Patologia[]>();
 
     // Toast
@@ -226,6 +229,7 @@ export default function Test() {
         setIsDrawerOpen(false);
     }
 
+    // Popular tudo
     useEffect(() => {
         const refSintomas = database.ref("sintomas");
         const refPatologias = database.ref("patologias");
@@ -240,6 +244,7 @@ export default function Test() {
                 };
             });
             setSintomas(resultadoSintoma);
+            setUnselectedSymptoms(resultadoSintoma);
         });
 
         refPatologias.on("value", (resultado) => {
@@ -274,6 +279,48 @@ export default function Test() {
             setPatologias(resultadoPatologia);
         });
     }, []);
+    // Popular check de sintomas
+    const [unselectedSymptoms, setUnselectedSymptoms] =
+        useState<Sintoma[]>(sintomas);
+    const [selectedSymptoms, setSelectedSymptoms] = useState<Sintoma[]>([]);
+    const [defaultUnselectedSymptoms, setDefaultUnselectedSymptoms] =
+        useState<Sintoma[]>(sintomas);
+    const [defaultSelectedSymptoms, setDefaultSelectedSymptoms] = useState<
+        Sintoma[]
+    >([]);
+
+    function resetSymptomSelection(){
+        setUnselectedSymptoms(sintomas)
+        setSelectedSymptoms(defaultSelectedSymptoms)
+        setKeySymptomsSelecionados(defaultKeySymptomsSelecionados)
+    }
+
+    useEffect(() => {
+        setUnselectedSymptoms(sintomas);
+    }, [sintomas]);
+    // Lidar com Sintomas Marcados
+
+    const handleSymptomClick = (index: number, isUnselected: boolean) => {
+        if (isUnselected) {
+            const clickedSymptom = unselectedSymptoms[index];
+            setUnselectedSymptoms((prevSymptoms) =>
+                prevSymptoms.filter((_, i) => i !== index)
+            );
+            setSelectedSymptoms((prevSymptoms) => [
+                ...prevSymptoms,
+                clickedSymptom,
+            ]);
+        } else {
+            const clickedSymptom = selectedSymptoms[index];
+            setSelectedSymptoms((prevSymptoms) =>
+                prevSymptoms.filter((_, i) => i !== index)
+            );
+            setUnselectedSymptoms((prevSymptoms) => [
+                ...prevSymptoms,
+                clickedSymptom,
+            ]);
+        }
+    };
 
     function createSymptomData(event: FormEvent) {
         event.preventDefault();
@@ -306,6 +353,7 @@ export default function Test() {
             isClosable: true,
         });
         uncheckAll();
+        resetSymptomSelection()
         setPatologiaData(emptyPatologiaData);
     }
 
@@ -348,6 +396,7 @@ export default function Test() {
         setChave(patologia.chave);
         checkSpecific(patologia);
         setPatologiaData(patologia);
+        setKeySymptomsSelecionados(patologia.sintomas);
     }
 
     function updateDiseaseData() {
@@ -411,6 +460,71 @@ export default function Test() {
             isClosable: true,
         });
     }
+
+    // Adicionar Novo Simtoma na Lista
+    const [keySymptomsSelecionados, setKeySymptomsSelecionados] = useState([
+        "",
+    ]);
+    const [defaultKeySymptomsSelecionados, setDefaultKeySymptomsSelecionados] = useState([
+        "",
+    ]);
+
+    function adicionarNovoSintoma(
+        keySymptomsSelecionados: string[],
+        setKeySymptomsSelecionados: React.Dispatch<
+            React.SetStateAction<string[]>
+        >,
+        newSymptom: string
+    ) {
+        const updatedSymptoms = [...keySymptomsSelecionados, newSymptom];
+        setKeySymptomsSelecionados(updatedSymptoms);
+        setIsLoading(false);
+    }
+
+    function removerSintoma(
+        keySymptomsSelecionados: string[],
+        setKeySymptomsSelecionados: React.Dispatch<
+            React.SetStateAction<string[]>
+        >,
+        symptomToRemove: string
+    ) {
+        const updatedSymptoms = keySymptomsSelecionados.filter(
+            (symptom) => symptom !== symptomToRemove
+        );
+        setKeySymptomsSelecionados(updatedSymptoms);
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+        const dados = {
+            chave: chave,
+            nomePatologia: patologiaData.nomePatologia,
+            causador: patologiaData.causador,
+            descricao: patologiaData.descricao,
+            diagnostico: patologiaData.diagnostico,
+            prevalencia: {
+                animal: {
+                    cachorro: patologiaData.prevalencia.animal.cachorro,
+                    gato: patologiaData.prevalencia.animal.gato,
+                },
+                regiao: {
+                    norte: patologiaData.prevalencia.regiao.norte,
+                    nordeste: patologiaData.prevalencia.regiao.nordeste,
+                    centrooeste: patologiaData.prevalencia.regiao.centrooeste,
+                    sudeste: patologiaData.prevalencia.regiao.sudeste,
+                    sul: patologiaData.prevalencia.regiao.sul,
+                },
+            },
+            tratamento: patologiaData.tratamento,
+            prevencao: patologiaData.prevencao,
+            prognostico: patologiaData.prognostico,
+            sintomas: keySymptomsSelecionados,
+        };
+
+        setPatologiaData(dados);
+    }, [keySymptomsSelecionados]);
+
+
 
     return (
         <div>
@@ -903,6 +1017,118 @@ export default function Test() {
                                                 })
                                             }
                                         />
+                                        <Card
+                                            marginTop={"5px"}
+                                            backgroundColor={"whitesmoke"}
+                                        >
+                                            <CardHeader>
+                                                <Text>Selecionados:</Text>
+                                                <Card>
+                                                    <CardBody>
+                                                        {isLoading
+                                                            ? selectedSymptoms.map(
+                                                                (
+                                                                    sintoma,
+                                                                    index
+                                                                ) => {
+                                                                    return (
+                                                                        <Tag
+                                                                        key={'0'}
+                                                                            cursor={
+                                                                                "pointer"
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                sintoma.nomeSintoma
+                                                                            }
+                                                                        </Tag>
+                                                                    );
+                                                                }
+                                                            )
+                                                            : selectedSymptoms.map(
+                                                                (
+                                                                    sintoma,
+                                                                    index
+                                                                ) => {
+                                                                    return (
+                                                                        <Tag
+                                                                        key={'1'}
+                                                                            cursor={
+                                                                                "pointer"
+                                                                            }
+                                                                            onClick={() => {
+                                                                                removerSintoma(
+                                                                                    keySymptomsSelecionados,
+                                                                                    setKeySymptomsSelecionados,
+                                                                                    sintoma.chave
+                                                                                );
+                                                                                handleSymptomClick(
+                                                                                    index,
+                                                                                    false
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            {" "}
+                                                                            {
+                                                                                sintoma.nomeSintoma
+                                                                            }
+                                                                        </Tag>
+                                                                    );
+                                                                }
+                                                            )}
+                                                    </CardBody>
+                                                </Card>
+                                            </CardHeader>
+                                            <CardBody>
+                                                {isLoading
+                                                    ? unselectedSymptoms.map(
+                                                        (sintoma, index) => {
+                                                            return (
+                                                                <Tag
+                                                                key={'2'}
+                                                                    cursor={
+                                                                        "pointer"
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        sintoma.nomeSintoma
+                                                                    }
+                                                                </Tag>
+                                                            );
+                                                        }
+                                                    )
+                                                    : unselectedSymptoms.map(
+                                                        (sintoma, index) => {
+                                                            return (
+                                                                <Tag
+                                                                key={'3'}
+                                                                    cursor={
+                                                                        "pointer"
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setIsLoading(
+                                                                            true
+                                                                        );
+                                                                        adicionarNovoSintoma(
+                                                                            keySymptomsSelecionados,
+                                                                            setKeySymptomsSelecionados,
+                                                                            sintoma.chave
+                                                                        );
+                                                                        handleSymptomClick(
+                                                                            index,
+                                                                            true
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        sintoma.nomeSintoma
+                                                                    }
+                                                                </Tag>
+                                                            );
+                                                        }
+                                                    )}
+                                            </CardBody>
+                                        </Card>
                                         {modificando ? (
                                             <Button
                                                 colorScheme="teal"
