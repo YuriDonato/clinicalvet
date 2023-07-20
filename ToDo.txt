@@ -1,0 +1,4 @@
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Ok, vamos lá, preciso fazer a caixa de selecionados retornar a string array correta
+além disso, fazer os sintomas aparecerem correspondentes nos cards, tudo isso é da page do clinica tá
+E TENTA NÃO SURTAR NO PROCESSO

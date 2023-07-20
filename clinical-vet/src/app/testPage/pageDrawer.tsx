@@ -52,7 +52,6 @@ type PatologiaDrawerProps = {
 
 
 const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, patologia }) => {
-    const [sintomasKeys, setSintomasKeys] = useState<string[]>([])
     const [sintomas, setSintomas] = useState<{ [key: string]: Sintoma }>({});
 
     useEffect(() => {
