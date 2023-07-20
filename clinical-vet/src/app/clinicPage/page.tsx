@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { database } from "../services/firebase";
-import { Text, Box } from "@chakra-ui/react";
+import {
+  Text,
+  Box,
+  CircularProgress,
+  CircularProgressLabel,
+} from "@chakra-ui/react";
 
 type Patologia = {
   chave: string;
@@ -124,42 +129,43 @@ export default function Clinic() {
     });
   }, []);
 
-    //Selecionando sintoma
-    useEffect(() => {
-      setUnselectedSymptoms(sintomas);
-    }, [sintomas]);
-  
-    const [unselectedSymptoms, setUnselectedSymptoms] =
-      useState<Sintoma[]>(sintomas);
-    const [selectedSymptoms, setSelectedSymptoms] = useState<Sintoma[]>([]);
-  
-    const handleSymptomClick = (index: number, isUnselected: boolean) => {
-      if (isUnselected) {
-        const clickedSymptom = unselectedSymptoms[index];
-        setUnselectedSymptoms((prevSymptoms) =>
-          prevSymptoms.filter((_, i) => i !== index)
-        );
-        setSelectedSymptoms((prevSymptoms) => [
-          ...prevSymptoms,
-          clickedSymptom,
-        ]);
-      } else {
-        const clickedSymptom = selectedSymptoms[index];
-        setSelectedSymptoms((prevSymptoms) =>
-          prevSymptoms.filter((_, i) => i !== index)
-        );
-        setUnselectedSymptoms((prevSymptoms) => [
-          ...prevSymptoms,
-          clickedSymptom,
-        ]);
-      }
-      console.log(`Sintoma selecionado: ${selectedSymptoms.length}`);
-      console.log(`Sintoma não selecionado: ${unselectedSymptoms.length}`);
-    };
-  
+  //Selecionando sintoma
+  useEffect(() => {
+    setUnselectedSymptoms(sintomas);
+  }, [sintomas]);
+
+  const [unselectedSymptoms, setUnselectedSymptoms] =
+    useState<Sintoma[]>(sintomas);
+  const [selectedSymptoms, setSelectedSymptoms] = useState<Sintoma[]>([]);
+
+  const handleSymptomClick = (index: number, isUnselected: boolean) => {
+    if (isUnselected) {
+      const clickedSymptom = unselectedSymptoms[index];
+      setUnselectedSymptoms((prevSymptoms) =>
+        prevSymptoms.filter((_, i) => i !== index)
+      );
+      setSelectedSymptoms((prevSymptoms) => [
+        ...prevSymptoms,
+        clickedSymptom,
+      ]);
+    } else {
+      const clickedSymptom = selectedSymptoms[index];
+      setSelectedSymptoms((prevSymptoms) =>
+        prevSymptoms.filter((_, i) => i !== index)
+      );
+      setUnselectedSymptoms((prevSymptoms) => [
+        ...prevSymptoms,
+        clickedSymptom,
+      ]);
+    }
+    console.log(`Sintoma selecionado: ${selectedSymptoms.length}`);
+    console.log(`Sintoma não selecionado: ${unselectedSymptoms.length}`);
+  };
 
   // Populando sintomas para cada patologia Card
-  const [sintomasPorPatologia, setSintomasPorPatologia] = useState<{ [key: string]: string[] }>({});
+  const [sintomasPorPatologia, setSintomasPorPatologia] = useState<{
+    [key: string]: string[];
+  }>({});
   useEffect(() => {
     // Função para definir os sintomas para cada patologia
     const definirSintomasPorPatologia = () => {
@@ -175,29 +181,46 @@ export default function Clinic() {
     setSintomasPorPatologia(definirSintomasPorPatologia());
   }, [patologias]);
 
-// Inicialize o estado com um array vazio
-const [sintomasNomesKeys, setSintomasNomesKeys] = useState<{ [key: string]: Sintoma }>({});
+  // Inicialize o estado com um array vazio
+  const [sintomasNomesKeys, setSintomasNomesKeys] = useState<{
+    [key: string]: Sintoma;
+  }>({});
 
-function definirSintoma(patologia: Patologia){
-  const sintomasNomes = patologia.sintomas
-        .map((chave) => sintomasNomesKeys[chave]?.nomeSintoma)
-        .filter((nomeSintoma) => nomeSintoma !== undefined);
-        console.log(` sintomas nomes ${sintomasNomes}`)
-    return sintomasNomes
-}
+  function definirSintoma(patologia: Patologia) {
+    const sintomasNomes = patologia.sintomas
+      .map((chave) => sintomasNomesKeys[chave]?.nomeSintoma)
+      .filter((nomeSintoma) => nomeSintoma !== undefined);
+    console.log(` sintomas nomes ${sintomasNomes}`);
+    return sintomasNomes;
+  }
 
-useEffect(() => {
-  const refSintomas = database.ref("sintomas");
-  refSintomas.on("value", (resultado) => {
+  useEffect(() => {
+    const refSintomas = database.ref("sintomas");
+    refSintomas.on("value", (resultado) => {
       const resultadoSintomas = resultado.val();
       if (resultadoSintomas) {
-          setSintomasNomesKeys(resultadoSintomas);
+        setSintomasNomesKeys(resultadoSintomas);
       }
-  });
-}, []);
+    });
+  }, []);
 
+  // Buscar patologias com base nos sintomas selecionados
+  const [filteredPatologias, setFilteredPatologias] = useState<Patologia[]>(
+    []
+  );
 
+  useEffect(() => {
+    // Função para verificar se uma patologia contém todos os sintomas selecionados
+    const containsAllSelectedSymptoms = (patologia: Patologia) => {
+      return selectedSymptoms.every((selected) =>
+        patologia.sintomas.includes(selected.chave)
+      );
+    };
 
+    // Filtrar as patologias com base nos sintomas selecionados
+    const filteredData = patologias.filter(containsAllSelectedSymptoms);
+    setFilteredPatologias(filteredData);
+  }, [selectedSymptoms, patologias]);
 
   // retorno do html
   return (
@@ -268,20 +291,56 @@ useEffect(() => {
           </section>
         </div>
         <div className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6  gap-3 pl-10 pr-10 pt-10">
-          {patologias.map((patologia) => (
+          {filteredPatologias.map((patologia) => (
             <div className="bg-white text-black shadow-lg rounded-lg p-6">
-              <h2 className="text-xl font-bold mb-4">
-                {patologia.nomePatologia}
-              </h2>
-              <p className="text-gray-600 mb-4">{patologia.descricao}</p>
-              <h3 onClick={()=>definirSintoma(patologia)} className="text-lg font-bold mb-2">Sintomas:</h3>
-              {
+              <Box
+                id="header"
+                display={"flex"}
+                alignItems={"center"}
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+              >
+                <h2 className="text-xl font-bold mb-4">
+                  {patologia.nomePatologia}
+                </h2>
+                <CircularProgress size={'60px'}
+                  top={"0"}
+                  left={"0"}
+                  value={
+                    (selectedSymptoms.length /
+                      (patologia.sintomas.length - 1)) *
+                    100
+                  }
+                  color="green.400"
+                >
+                  <CircularProgressLabel fontSize={'10px'}>
+                    {(
+                      (selectedSymptoms.length /
+                        (patologia.sintomas.length -
+                          1)) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </CircularProgressLabel>
+                </CircularProgress>
+              </Box>
 
-              }
+              <p className="text-gray-600 mb-4">
+                {patologia.descricao}
+              </p>
+              <h3
+                onClick={() => definirSintoma(patologia)}
+                className="text-lg font-bold mb-2"
+              >
+                Sintomas:
+              </h3>
+              { }
               <ul className="list-disc list-inside">
-              {sintomasPorPatologia[patologia.chave]?.map((nomeSintoma) => (
-                  <li key={nomeSintoma}>{nomeSintoma}</li>
-                ))}
+                {sintomasPorPatologia[patologia.chave]?.map(
+                  (nomeSintoma) => (
+                    <li key={nomeSintoma}>{nomeSintoma}</li>
+                  )
+                )}
               </ul>
             </div>
           ))}
