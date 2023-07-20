@@ -292,7 +292,7 @@ export default function Clinic() {
         </div>
         <div className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6  gap-3 pl-10 pr-10 pt-10">
           {filteredPatologias.map((patologia) => (
-            <div className="bg-white text-black shadow-lg rounded-lg p-6">
+            <div key={'0'} className="bg-white text-black shadow-lg rounded-lg p-6">
               <Box
                 id="header"
                 display={"flex"}

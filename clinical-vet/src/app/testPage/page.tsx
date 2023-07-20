@@ -524,6 +524,8 @@ export default function Test() {
         setPatologiaData(dados);
     }, [keySymptomsSelecionados]);
 
+
+
     return (
         <div>
             <Link href={"/"}>
