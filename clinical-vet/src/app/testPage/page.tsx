@@ -1031,6 +1031,7 @@ export default function Test() {
                                                                 ) => {
                                                                     return (
                                                                         <Tag
+                                                                        key={'0'}
                                                                             cursor={
                                                                                 "pointer"
                                                                             }
@@ -1049,6 +1050,7 @@ export default function Test() {
                                                                 ) => {
                                                                     return (
                                                                         <Tag
+                                                                        key={'1'}
                                                                             cursor={
                                                                                 "pointer"
                                                                             }
@@ -1081,6 +1083,7 @@ export default function Test() {
                                                         (sintoma, index) => {
                                                             return (
                                                                 <Tag
+                                                                key={'2'}
                                                                     cursor={
                                                                         "pointer"
                                                                     }
@@ -1096,6 +1099,7 @@ export default function Test() {
                                                         (sintoma, index) => {
                                                             return (
                                                                 <Tag
+                                                                key={'3'}
                                                                     cursor={
                                                                         "pointer"
                                                                     }
