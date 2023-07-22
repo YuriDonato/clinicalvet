@@ -1,4 +1,99 @@
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-Ok, vamos lá, preciso fazer a caixa de selecionados retornar a string array correta
-além disso, fazer os sintomas aparecerem correspondentes nos cards, tudo isso é da page do clinica tá
-E TENTA NÃO SURTAR NO PROCESSO
+Sintomas: 
+Vômito - Emese ou Vômito
+Febre - Pirexia ou Febre
+Diarreia - Diarreia
+Espirro Reverso - Espirro Reverso
+Anemia - Anemia
+Coceira - Prurido ou Coceira
+Desconforto Abdominal - Dor Abdominal ou Desconforto Abdominal
+Hipertermia - Hipertermia
+Apatia - Apatia
+Perda de Apetite - Anorexia ou Perda de Apetite
+Turn Tilt - Desvio da Cabeça ou Inclinação da Cabeça
+Incordenação - Incoordenação
+Agitação - Agitação
+Tosse - Tosse
+Perda de Movimentos Inf - Perda de Movimentos Infecciosa ou Síndrome Vestibular Central
+Perda de Movimentos Post - Síndrome Vestibular Periférica ou Perda de Movimentos Periférica
+Taquicardia - Taquicardia
+Hipoglicemia - Hipoglicemia
+Salivação - Sialorreia ou Salivação Excessiva
+Hiperglicemia - Hiperglicemia
+Head Tilt - Desvio da Cabeça ou Inclinação da Cabeça
+Laceração - Laceração
+Retenção Urinária - Retenção Urinária
+Traumas - Traumas ou Lesões
+Vocalização - Vocalização
+Constipação - Obstipação ou Constipação
+Coprofagia - Coprofagia
+Lambedura - Lambedura Compulsiva ou Dermatite Língua
+Secreções Oculares - Secreções Oculares ou Supuração Ocular
+Convulsão - Convulsão ou Crise Convulsiva
+Sonolência - Sonolência ou Letargia
+Secreção Nasal - Corrimento Nasal ou Rinorreia
+Muco Fezes - Muco nas Fezes ou Fezes com Muco
+Desidratação - Desidratação
+Diarreia Sangue - Diarreia com Sangue ou Hematoquezia
+Indisposição - Mal-estar ou Indisposição
+Perda Peso - Perda de Peso ou Emagrecimento
+Inchaço Abdomen - Distensão Abdominal ou Inchaço Abdominal
+Gases - Flatulência ou Gases
+Dor - Dor
+Aumento Consumo Água - Polidipsia ou Aumento do Consumo de Água
+Xixi Excessivo - Poliúria ou Urina Excessiva
+Secreção Vaginal - Corrimento Vaginal ou Secreção Vaginal Anormal
+Baixa Resposta Estímulos - Depressão do Sistema Nervoso Central ou Baixa Responsividade
+Urina Escura - Hematúria ou Urina Escura
+Úlceras Bocais - Úlceras Orais ou Aftas
+Cianose - Cianose
+Icterícia - Icterícia ou Amarelamento das Mucosas
+Mucosas Pálidas - Mucosas Pálidas ou Mucosas com Coloração Reduzida
+Hemorragia Nasal - Epistaxe ou Hemorragia Nasal
+Hemorragia Generalizada - Hemorragia Generalizada ou Hemorragia Difusa
+Hemorragia Temporal - Hemorragia Temporal
+Dispneia - Dispneia ou Dificuldade Respiratória
+Taquipneia - Taquipneia ou Respiração Rápida
+Dor Ouvido - Otalgia ou Dor no Ouvido
+Perda Audição - Surdez ou Perda da Audição
+Coceira - Prurido ou Coceira
+Balanço Cabeça - Desvio da Cabeça ou Inclinação da Cabeça ----- POR DEPOIS
+Secreção Conduto Auditivo - Otite Externa ou Infecção do Ouvido Externo
+Excitação - Excitação ou Agitação
+Salivação - Sialorreia ou Salivação Excessiva
+Tremores - Tremores ou Abalos
+Dificuldade para Respirar - Dispneia ou Dificuldade Respiratória
+Ansiedade - Ansiedade
+Agressividade - Agressividade
+Queda Pelos - Alopecia ou Perda de Pelos
+Irritação Pele - Dermatite ou Irritação da Pele
+Descamação Pele - Descamação da Pele ou Caspa
+Pele Escurecida - Hiperpigmentação ou Pele Escurecida
+Erupções Cutâneas - Erupção Cutânea ou Lesões na Pele
+Incontinência Urinária - Incontinência Urinária
+Verrugas - Verrugas ou Papilomas
+Hesitação Urinária - Hesitação Urinária ou Dificuldade para Urinar
+Mucosa Oral - Mucosite ou Inflamação da Mucosa Oral
+Inflamação Articulações - Artrite ou Inflamação Articular
+Corrimento Vaginal - Corrimento Vaginal ou Secreção Vaginal Anormal
+Inflamação Testicular - Orquite ou Inflamação Testicular
+Espirros - Espirros
+Depressão - Depressão
+Olhos Lacrimejando - Epífora ou Olhos Lacrimejantes
+Esplenomegalia - Esplenomegalia ou Aumento do Baço
+Inchaço - Edema ou Inchaço
+Odor Fétido Feridas - Odor Fétido ou Mau Cheiro de Feridas
+Dor Local - Dor Localizada
+Caspas - Descamação da Pele ou Caspa
+Espessamento Pele - Hiperqueratose ou Espessamento da Pele
+Oleosidade Pele - Seborreia ou Oleosidade da Pele
+Mau Cheiro - Mau Cheiro ou Halitose
+Perda Peso - Perda de Peso ou Emagrecimento
+Poliúria - Poliúria ou Urina Excessiva
+Polidipsia - Polidipsia ou Aumento da Sede
+Aumento Consumo Água - Polidipsia ou Aumento do Consumo de Água
+Aumento Consumo Comida - Polifagia ou Aumento do Apetite
+Polifagia - Polifagia ou Aumento do Apetite
+Inflamação Pele - Dermatite ou Inflamação da Pele
+Diarreia Sangue - Diarreia com Sangue ou Hematoquezia
+Urina Sangue - Hematúria ou Urina com Sangue
+Diarreia Muco - Diarreia com Muco

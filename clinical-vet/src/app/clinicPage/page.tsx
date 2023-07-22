@@ -248,7 +248,7 @@ export default function Clinic() {
               <MdKeyboardArrowDown className={style} />
             </button>
             {showSymptoms && (
-              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-2 grid-cols-5 gap-2">
+              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6 gap-2">
                 {unselectedSymptoms.map((sintoma, index) => (
                   <Box
                     cursor={"pointer"}
@@ -273,7 +273,7 @@ export default function Clinic() {
               <MdKeyboardArrowDown className={style} />
             </button>
             {showSelectedSymptoms && (
-              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-2 grid-cols-5 gap-2">
+              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6 gap-2">
                 {selectedSymptoms.map((sintoma, index) => (
                   <Box
                     cursor={"pointer"}
@@ -340,7 +340,9 @@ export default function Clinic() {
                   (nomeSintoma) => (
                     <li key={nomeSintoma}>{nomeSintoma}</li>
                   )
-                )}
+                  
+                )
+                }
               </ul>
             </div>
           ))}
