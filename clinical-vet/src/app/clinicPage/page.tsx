@@ -8,7 +8,14 @@ import {
   Box,
   CircularProgress,
   CircularProgressLabel,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
+import { PiCatLight, PiDogLight } from "react-icons/pi"
+
 
 type Patologia = {
   chave: string;
@@ -290,10 +297,93 @@ export default function Clinic() {
             )}
           </section>
         </div>
-        <div className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6  gap-3 pl-10 pr-10 pt-10">
+        <div className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-4  gap-3 pl-10 pr-10 pt-10">
           {filteredPatologias.map((patologia) => (
-            <div key={'0'} className="bg-white text-black shadow-lg rounded-lg p-6">
-              <Box
+            <div key={"0"} className=" ">
+              {/* teste */}
+              <Accordion allowToggle>
+                <AccordionItem className="bg-white text-black shadow-lg rounded-lg">
+                  <h2>
+                    <AccordionButton
+                      className="p-6"
+                      _expanded={{
+                        bg: "",
+                        color: "black",
+                      }}
+                    >
+                      <Box
+                        as="span"
+                        flex={"1"}
+                        textAlign={"left"}
+                        id="header"
+                        display={"flex"}
+                        alignItems={"center"}
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                      >
+                        {patologia.prevalencia.animal.cachorro ? <PiDogLight /> : <PiCatLight />}
+                        <h2 className="text-xl font-bold mb-4">
+                          {patologia.nomePatologia}
+                        </h2>
+                        <CircularProgress
+                          size={"60px"}
+                          top={"0"}
+                          left={"0"}
+                          value={
+                            (selectedSymptoms.length /
+                              (patologia.sintomas
+                                .length -
+                                1)) *
+                            100
+                          }
+                          color="green.400"
+                        >
+                          <CircularProgressLabel
+                            fontSize={"10px"}
+                          >
+                            {(
+                              (selectedSymptoms.length /
+                                (patologia
+                                  .sintomas
+                                  .length -
+                                  1)) *
+                              100
+                            ).toFixed(2)}
+                            %
+                          </CircularProgressLabel>
+                        </CircularProgress>
+                      </Box>
+                      <AccordionIcon
+                        alignSelf={"right"}
+                      />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel>
+                    <p className="text-gray-600 mb-4">
+                      {patologia.descricao}
+                    </p>
+                    <h3
+                      onClick={() => definirSintoma(patologia)}
+                      className="text-lg font-bold mb-2"
+                    >
+                      Sintomas:
+                    </h3>
+                    { }
+                    <ul className="list-disc list-inside ">
+                      {sintomasPorPatologia[patologia.chave]?.map(
+                        (nomeSintoma) => (
+                          <li key={nomeSintoma}>{nomeSintoma}</li>
+                        )
+                      )
+                      }
+                    </ul>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+
+              {/* cabo teste */}
+              {/* ESTILO
+               <Box
                 id="header"
                 display={"flex"}
                 alignItems={"center"}
@@ -324,7 +414,6 @@ export default function Clinic() {
                   </CircularProgressLabel>
                 </CircularProgress>
               </Box>
-
               <p className="text-gray-600 mb-4">
                 {patologia.descricao}
               </p>
@@ -340,10 +429,9 @@ export default function Clinic() {
                   (nomeSintoma) => (
                     <li key={nomeSintoma}>{nomeSintoma}</li>
                   )
-                  
                 )
                 }
-              </ul>
+              </ul> */}
             </div>
           ))}
         </div>
