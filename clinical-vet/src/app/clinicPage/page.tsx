@@ -247,6 +247,28 @@ export default function Clinic() {
     setFilteredPatologias(filteredData);
   }, [selectedSymptoms, patologias]);
 
+
+  // Filtrar pelo state de gato ou cão e ordem alfabetica
+  function filterAndSortPatologias(patologias: Patologia[], catMode: boolean, selectedSymptoms: Sintoma[]) {
+    const filteredPatologias = patologias.filter(
+      (patologia) =>
+        (catMode && patologia.prevalencia.animal.gato) || (!catMode && patologia.prevalencia.animal.cachorro)
+    );
+  
+    const sortedPatologias = filteredPatologias.sort((a, b) => {
+      const percentageA = (selectedSymptoms.length / (a.sintomas.length - 1)) * 100;
+      const percentageB = (selectedSymptoms.length / (b.sintomas.length - 1)) * 100;
+      
+      // Sort in descending order based on the percentage
+      return percentageB - percentageA;
+    });
+  
+    return sortedPatologias;
+  }
+  useEffect(() => {
+    const filteredData = filterAndSortPatologias(patologias, catMode, selectedSymptoms);
+    setFilteredPatologias(filteredData);
+  }, [selectedSymptoms, patologias, catMode]);
   // retorno do html
   return (
     <div className="p-10">
@@ -263,7 +285,7 @@ export default function Clinic() {
         </Link>
         {/* cachorro ou gato */}
         <Box backgroundColor={'blue.200'} borderRadius={'25px'} height={'fit-content'} width={'fit-content'} display={'flex'} >
-          <PiCatLight
+          <PiDogLight
             size={'2rem'}
             color="white"
             opacity={catMode ? 0 : 1}
@@ -271,7 +293,7 @@ export default function Clinic() {
             cursor={'pointer'}
             className={transition ? 'transition2s' : ''}
           />
-          <PiDogLight
+          <PiCatLight
             size={'2rem'}
             color="yellow.300"
             opacity={catMode ? 1 : 0}
@@ -335,7 +357,7 @@ export default function Clinic() {
             )}
           </section>
         </div>
-        <div className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-4  gap-3 pl-10 pr-10 pt-10">
+        <div id="listaPatologias" className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-4  gap-3 pl-10 pr-10 pt-10">
           {filteredPatologias.map((patologia) => (
             <div key={"0"} className=" ">
               {/* teste */}
