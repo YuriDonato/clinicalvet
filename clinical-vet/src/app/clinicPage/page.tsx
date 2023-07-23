@@ -284,7 +284,7 @@ export default function Clinic() {
           </button>{" "}
         </Link>
         {/* cachorro ou gato */}
-        <Box backgroundColor={'blue.200'} borderRadius={'25px'} height={'fit-content'} width={'fit-content'} display={'flex'} >
+        <Box className="bg-azulclaro" borderRadius={'25px'} height={'fit-content'} width={'fit-content'} display={'flex'} >
           <PiDogLight
             size={'2rem'}
             color="white"
@@ -381,12 +381,6 @@ export default function Clinic() {
                         flexDirection={"row"}
                         justifyContent={"space-between"}
                       >
-                        {patologia.prevalencia.animal
-                          .cachorro ? (
-                          <PiDogLight />
-                        ) : (
-                          <PiCatLight />
-                        )}
                         <h2 className="text-xl font-bold mb-4">
                           {patologia.nomePatologia}
                         </h2>
