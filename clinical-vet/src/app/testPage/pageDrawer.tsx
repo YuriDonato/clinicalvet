@@ -68,6 +68,9 @@ const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, pato
         .map((chave) => sintomas[chave]?.nomeSintoma)
         .filter((nomeSintoma) => nomeSintoma !== undefined);
 
+    function mostrarChaveSintoma(){
+
+    }
 
     return (
         <Drawer isOpen={isOpen} placement="right" onClose={onClose}>

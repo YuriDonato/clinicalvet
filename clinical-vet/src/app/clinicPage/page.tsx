@@ -13,9 +13,14 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  FormLabel,
+  Input,
+  Icon,
+  IconButton,
 } from "@chakra-ui/react";
-import { PiCatLight, PiDogLight } from "react-icons/pi"
-
+import { PiCatLight, PiDogLight } from "react-icons/pi";
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Switch, ChakraProvider, CSSReset } from '@chakra-ui/react';
 
 type Patologia = {
   chave: string;
@@ -48,6 +53,19 @@ type Sintoma = {
 };
 
 export default function Clinic() {
+  // Cachorro e Gato
+  const [catMode, setCatMode] = useState(false);
+  const [transition, setTransition] = useState(false);
+
+  const toggleCatMode = () => {
+    setCatMode((prevCatMode) => !prevCatMode);
+    setTransition(true)
+    setTimeout(() => {
+      setTransition(false)
+    }, 250)
+  };
+
+
   // Fazer o botão de abrir e fechar sintomas
   const [showSymptoms, setShowSymptoms] = useState(false);
   const [showSelectedSymptoms, setShowSelectedSymptoms] = useState(false);
@@ -232,7 +250,7 @@ export default function Clinic() {
   // retorno do html
   return (
     <div className="p-10">
-      <div>
+      <div className="flex justify-between">
         <Link href={"/"}>
           {" "}
           <button>
@@ -243,6 +261,26 @@ export default function Clinic() {
             />
           </button>{" "}
         </Link>
+        {/* cachorro ou gato */}
+        <Box backgroundColor={'blue.200'} borderRadius={'25px'} height={'fit-content'} width={'fit-content'} display={'flex'} >
+          <PiCatLight
+            size={'2rem'}
+            color="white"
+            opacity={catMode ? 0 : 1}
+            onClick={toggleCatMode}
+            cursor={'pointer'}
+            className={transition ? 'transition2s' : ''}
+          />
+          <PiDogLight
+            size={'2rem'}
+            color="yellow.300"
+            opacity={catMode ? 1 : 0}
+            onClick={toggleCatMode}
+            cursor={'pointer'}
+            className={transition ? 'transition2s' : ''}
+          />
+        </Box>
+        {/* fim cachorro ou gato */}
       </div>
       <center>
         <div className="grid md:grid-cols-1 grid-cols-2 gap-5">
@@ -321,7 +359,12 @@ export default function Clinic() {
                         flexDirection={"row"}
                         justifyContent={"space-between"}
                       >
-                        {patologia.prevalencia.animal.cachorro ? <PiDogLight /> : <PiCatLight />}
+                        {patologia.prevalencia.animal
+                          .cachorro ? (
+                          <PiDogLight />
+                        ) : (
+                          <PiCatLight />
+                        )}
                         <h2 className="text-xl font-bold mb-4">
                           {patologia.nomePatologia}
                         </h2>
@@ -363,19 +406,22 @@ export default function Clinic() {
                       {patologia.descricao}
                     </p>
                     <h3
-                      onClick={() => definirSintoma(patologia)}
+                      onClick={() =>
+                        definirSintoma(patologia)
+                      }
                       className="text-lg font-bold mb-2"
                     >
                       Sintomas:
                     </h3>
                     { }
                     <ul className="list-disc list-inside ">
-                      {sintomasPorPatologia[patologia.chave]?.map(
-                        (nomeSintoma) => (
-                          <li key={nomeSintoma}>{nomeSintoma}</li>
-                        )
-                      )
-                      }
+                      {sintomasPorPatologia[
+                        patologia.chave
+                      ]?.map((nomeSintoma) => (
+                        <li key={nomeSintoma}>
+                          {nomeSintoma}
+                        </li>
+                      ))}
                     </ul>
                   </AccordionPanel>
                 </AccordionItem>
