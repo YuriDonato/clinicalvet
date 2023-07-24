@@ -207,6 +207,7 @@ export default function Clinic() {
   }, [patologias]);
 
   // Inicialize o estado com um array vazio
+  // Inicialize o estado com um objeto vazio
   const [sintomasNomesKeys, setSintomasNomesKeys] = useState<{
     [key: string]: Sintoma;
   }>({});
@@ -214,7 +215,13 @@ export default function Clinic() {
   function definirSintoma(patologia: Patologia) {
     const sintomasNomes = patologia.sintomas
       .map((chave) => sintomasNomesKeys[chave]?.nomeSintoma)
-      .filter((nomeSintoma) => nomeSintoma !== undefined);
+      .filter((nomeSintoma) => nomeSintoma !== undefined)
+      .reduce<string[]>((acc, nomeSintoma) => {
+        if (!acc.includes(nomeSintoma)) {
+          acc.push(nomeSintoma);
+        }
+        return acc;
+      }, []); // Usando reduce para evitar duplicatas
     console.log(` sintomas nomes ${sintomasNomes}`);
     return sintomasNomes;
   }
