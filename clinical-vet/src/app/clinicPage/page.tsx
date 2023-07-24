@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { database } from "../services/firebase";
@@ -247,6 +247,11 @@ export default function Clinic() {
     setFilteredPatologias(filteredData);
   }, [selectedSymptoms, patologias]);
 
+  // Teste
+  const filteredAndSortedPatologias = useMemo(() => {
+    return filterAndSortPatologias(patologias, catMode, selectedSymptoms);
+  }, [patologias, catMode, selectedSymptoms]);
+
 
   // Filtrar pelo state de gato ou cão e ordem alfabetica
   function filterAndSortPatologias(
@@ -284,7 +289,7 @@ useEffect(() => {
 }, [selectedSymptoms, patologias, catMode]);
   // retorno do html
   return (
-    <div className="p-10">
+    <div className="p-10 select-none">
       <div className="flex justify-between">
         <Link href={"/"}>
           {" "}
@@ -371,7 +376,7 @@ useEffect(() => {
           </section>
         </div>
         <div id="listaPatologias" className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-4  gap-3 pl-10 pr-10 pt-10">
-          {filteredPatologias.map((patologia) => (
+          {filteredAndSortedPatologias.map((patologia) => (
             <div key={"0"} className=" ">
               {/* teste */}
               <Accordion allowToggle>
