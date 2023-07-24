@@ -255,12 +255,10 @@ export default function Clinic() {
     selectedSymptoms: Sintoma[]
   ) {
     const filteredPatologias = patologias.filter((patologia) => {
-      // Verifica se a patologia contém todos os sintomas selecionados
       const containsAllSelectedSymptoms = selectedSymptoms.every((selected) =>
         patologia.sintomas.includes(selected.chave)
       );
   
-      // Filtra apenas patologias que contenham todos os sintomas selecionados e respeitam o modo catMode
       return (
         containsAllSelectedSymptoms &&
         ((catMode && patologia.prevalencia.animal.gato) ||
@@ -268,10 +266,14 @@ export default function Clinic() {
       );
     });
   
-    // Ordena as patologias em ordem alfabética pelo nomePatologia
-    const sortedPatologias = filteredPatologias.sort((a, b) =>
-      a.nomePatologia.localeCompare(b.nomePatologia)
-    );
+    const sortedPatologias = filteredPatologias.sort((a, b) => {
+      const percentageA =
+        (selectedSymptoms.length / (a.sintomas.length - 1)) * 100;
+      const percentageB =
+        (selectedSymptoms.length / (b.sintomas.length - 1)) * 100;
+  
+      return percentageB - percentageA;
+    });
   
     return sortedPatologias;
   }
