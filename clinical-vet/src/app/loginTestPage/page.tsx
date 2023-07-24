@@ -15,8 +15,8 @@ import { useState, FormEvent, useEffect } from "react";
 export default function LoginTestPage() {
   const [name, setName] = useState("");
   const [senha, setSenha] = useState("");
-  const trueName = "admin";
-  const truePassword = "admin123";
+  const trueName = "milaadsg";
+  const truePassword = "0867";
 
   const useRouterPage = useRouter();
 
@@ -44,7 +44,7 @@ export default function LoginTestPage() {
     <center>
       <FormControl
         borderRadius={"25px"}
-        bgColor={"blue.300"}
+        className="bg-azulclaro"
         w={"300px"}
         marginTop={"15%"}
         padding={"20px"}

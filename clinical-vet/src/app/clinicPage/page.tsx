@@ -249,26 +249,37 @@ export default function Clinic() {
 
 
   // Filtrar pelo state de gato ou cão e ordem alfabetica
-  function filterAndSortPatologias(patologias: Patologia[], catMode: boolean, selectedSymptoms: Sintoma[]) {
-    const filteredPatologias = patologias.filter(
-      (patologia) =>
-        (catMode && patologia.prevalencia.animal.gato) || (!catMode && patologia.prevalencia.animal.cachorro)
-    );
+  function filterAndSortPatologias(
+    patologias: Patologia[],
+    catMode: boolean,
+    selectedSymptoms: Sintoma[]
+  ) {
+    const filteredPatologias = patologias.filter((patologia) => {
+      // Verifica se a patologia contém todos os sintomas selecionados
+      const containsAllSelectedSymptoms = selectedSymptoms.every((selected) =>
+        patologia.sintomas.includes(selected.chave)
+      );
   
-    const sortedPatologias = filteredPatologias.sort((a, b) => {
-      const percentageA = (selectedSymptoms.length / (a.sintomas.length - 1)) * 100;
-      const percentageB = (selectedSymptoms.length / (b.sintomas.length - 1)) * 100;
-      
-      // Sort in descending order based on the percentage
-      return percentageB - percentageA;
+      // Filtra apenas patologias que contenham todos os sintomas selecionados e respeitam o modo catMode
+      return (
+        containsAllSelectedSymptoms &&
+        ((catMode && patologia.prevalencia.animal.gato) ||
+          (!catMode && patologia.prevalencia.animal.cachorro))
+      );
     });
+  
+    // Ordena as patologias em ordem alfabética pelo nomePatologia
+    const sortedPatologias = filteredPatologias.sort((a, b) =>
+      a.nomePatologia.localeCompare(b.nomePatologia)
+    );
   
     return sortedPatologias;
   }
-  useEffect(() => {
-    const filteredData = filterAndSortPatologias(patologias, catMode, selectedSymptoms);
-    setFilteredPatologias(filteredData);
-  }, [selectedSymptoms, patologias, catMode]);
+
+useEffect(() => {
+  const filteredData = filterAndSortPatologias(patologias, catMode, selectedSymptoms);
+  setFilteredPatologias(filteredData);
+}, [selectedSymptoms, patologias, catMode]);
   // retorno do html
   return (
     <div className="p-10">
