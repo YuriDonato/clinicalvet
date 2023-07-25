@@ -1,0 +1,166 @@
+$corEscura: #105958;
+$corQuaseEscura: #125c5b;
+$corMedia: #1ea6a3;
+$corQuaseClara: #27d9d6;
+$corClara: #6bdfdd;
+
+.bgMain {
+    background-color: white;
+    user-select: none;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.bgCorEscura {
+    background-color: $corEscura;
+}
+.bgCorQuaseEscura {
+    background-color: $corQuaseEscura;
+}
+.bgCorMedia {
+    background-color: $corMedia;
+}
+.bgCorQuaseClara {
+    background-color: $corQuaseClara;
+}
+.bgCorClara {
+    background-color: $corClara;
+}
+
+.waveContainer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.backgroundWave {
+    position: relative;
+    top: 0;
+    width: 100%;
+    transform-origin: 100% 100%;
+    margin-left: auto;
+    transform: scale(1);
+    overflow: hidden;
+}
+.backgroundWaveMeio {
+    position: relative;
+    top: 0;
+    width: 100%;
+    margin-top: -5px;
+    margin-left: auto;
+    transform: scaleY(-1);
+    overflow: hidden;
+}
+
+.navBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    background-color: $corEscura;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    transition: all ease 0.5s;
+
+}
+
+.navBar_active{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    background-color: #10595881;
+    transition: all ease 0.5s;
+}
+
+.assineButton {
+    background-color: $corMedia;
+    color: white;
+    &:hover {
+        background-color: $corClara;
+    }
+}
+
+.entrarButton {
+    color: white;
+    &:hover {
+        background-color: $corEscura;
+    }
+}
+
+.textOverWave_logo {
+    position: absolute;
+    top: 5%;
+    left: 1%;
+    text-align: left;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    /* Nova adição para responsividade */
+    width: 90%; /* Ajuste a largura conforme necessário */
+    max-width: 700px; /* Ajuste o valor conforme necessário */
+    .logo{
+        width: 300px;
+        &Name{
+            margin-bottom: 7.5rem;
+            color: $corMedia
+        }
+    }
+    .assine{
+        left: 18%;
+        margin-top: 1%;
+        background-color: $corMedia;
+        color: white;
+        &:hover{
+            background-color: $corClara;
+        }
+    }
+}
+
+.textOverWave_firstInfo{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    text-align: left;
+    color: white;
+    font-size: 24px;
+    /* Nova adição para responsividade */
+    width: 100%; /* Ajuste a largura conforme necessário */
+    max-width: 900px; /* Ajuste o valor conforme necessário */
+    flex-wrap: nowrap;
+    &__text1{
+        text-align: center;
+        font-weight: 500;
+        font-size: 36px;
+        margin-left: 20%;
+        margin-bottom: 7.5%;
+    }
+    &__text2{
+        font-size: 26px;
+        background-color: white;
+        color: $corMedia;
+        padding: 0.5rem 2rem;
+        border-radius: 2rem;
+        margin-left: 20%;
+        margin-bottom: 7.5%;
+    }
+    &__text3{
+        font-size: 22px;
+        margin-bottom: 7.5%;
+        margin-left: 0%;
+    }
+    &__text4{
+        font-size: 22px;
+        margin-bottom: 7.5%;
+        margin-left: -20%;
+    }
+}
+

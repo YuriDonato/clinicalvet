@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, FormEvent } from "react";
 import Link from "next/link";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { database } from "../services/firebase";
@@ -19,8 +19,6 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { PiCatLight, PiDogLight } from "react-icons/pi";
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { Switch, ChakraProvider, CSSReset } from '@chakra-ui/react';
 
 type Patologia = {
   chave: string;
@@ -59,12 +57,11 @@ export default function Clinic() {
 
   const toggleCatMode = () => {
     setCatMode((prevCatMode) => !prevCatMode);
-    setTransition(true)
+    setTransition(true);
     setTimeout(() => {
-      setTransition(false)
-    }, 250)
+      setTransition(false);
+    }, 250);
   };
-
 
   // Fazer o botão de abrir e fechar sintomas
   const [showSymptoms, setShowSymptoms] = useState(false);
@@ -95,6 +92,32 @@ export default function Clinic() {
     changeStyle();
     toggleCurrentState();
   };
+
+  // Novo estado para armazenar os sintomas filtrados
+  const [sintomasFiltrados, setSintomasFiltrados] = useState<Sintoma[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Função para filtrar os sintomas com base na busca
+  function searchSymptom(event: FormEvent<HTMLInputElement>) {
+    const palavra = event.currentTarget.value.trim().toLowerCase();
+
+    if (palavra.length > 0) {
+      const sintomasFiltrados = sintomas.filter(
+        (sintoma) =>
+          sintoma.nomeSintoma.toLowerCase().includes(palavra) &&
+          !selectedSymptoms.some(
+            (selected) => selected.chave === sintoma.chave
+          ),
+          setIsSearching(true)
+      );
+
+      setSintomasFiltrados(sintomasFiltrados);
+    } else {
+      setSintomasFiltrados([]), // Limpar a busca se a palavra estiver vazia
+      setIsSearching(false)
+
+    }
+  }
 
   // Logica dos botoes principais
 
@@ -259,7 +282,6 @@ export default function Clinic() {
     return filterAndSortPatologias(patologias, catMode, selectedSymptoms);
   }, [patologias, catMode, selectedSymptoms]);
 
-
   // Filtrar pelo state de gato ou cão e ordem alfabetica
   function filterAndSortPatologias(
     patologias: Patologia[],
@@ -267,33 +289,37 @@ export default function Clinic() {
     selectedSymptoms: Sintoma[]
   ) {
     const filteredPatologias = patologias.filter((patologia) => {
-      const containsAllSelectedSymptoms = selectedSymptoms.every((selected) =>
-        patologia.sintomas.includes(selected.chave)
+      const containsAllSelectedSymptoms = selectedSymptoms.every(
+        (selected) => patologia.sintomas.includes(selected.chave)
       );
-  
+
       return (
         containsAllSelectedSymptoms &&
         ((catMode && patologia.prevalencia.animal.gato) ||
           (!catMode && patologia.prevalencia.animal.cachorro))
       );
     });
-  
+
     const sortedPatologias = filteredPatologias.sort((a, b) => {
       const percentageA =
         (selectedSymptoms.length / (a.sintomas.length - 1)) * 100;
       const percentageB =
         (selectedSymptoms.length / (b.sintomas.length - 1)) * 100;
-  
+
       return percentageB - percentageA;
     });
-  
+
     return sortedPatologias;
   }
 
-useEffect(() => {
-  const filteredData = filterAndSortPatologias(patologias, catMode, selectedSymptoms);
-  setFilteredPatologias(filteredData);
-}, [selectedSymptoms, patologias, catMode]);
+  useEffect(() => {
+    const filteredData = filterAndSortPatologias(
+      patologias,
+      catMode,
+      selectedSymptoms
+    );
+    setFilteredPatologias(filteredData);
+  }, [selectedSymptoms, patologias, catMode]);
   // retorno do html
   return (
     <div className="p-10 select-none">
@@ -309,22 +335,28 @@ useEffect(() => {
           </button>{" "}
         </Link>
         {/* cachorro ou gato */}
-        <Box className="bg-azulclaro" borderRadius={'25px'} height={'fit-content'} width={'fit-content'} display={'flex'} >
+        <Box
+          className="bg-azulclaro"
+          borderRadius={"25px"}
+          height={"fit-content"}
+          width={"fit-content"}
+          display={"flex"}
+        >
           <PiDogLight
-            size={'2rem'}
+            size={"2rem"}
             color="white"
             opacity={catMode ? 0 : 1}
             onClick={toggleCatMode}
-            cursor={'pointer'}
-            className={transition ? 'transition2s' : ''}
+            cursor={"pointer"}
+            className={transition ? "transition2s" : ""}
           />
           <PiCatLight
-            size={'2rem'}
+            size={"2rem"}
             color="yellow.300"
             opacity={catMode ? 1 : 0}
             onClick={toggleCatMode}
-            cursor={'pointer'}
-            className={transition ? 'transition2s' : ''}
+            cursor={"pointer"}
+            className={transition ? "transition2s" : ""}
           />
         </Box>
         {/* fim cachorro ou gato */}
@@ -340,20 +372,58 @@ useEffect(() => {
               <MdKeyboardArrowDown className={style} />
             </button>
             {showSymptoms && (
-              <div className="bg-azulclaro shadow-lg rounded-lg p-6 mt-4 grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6 gap-2">
-                {unselectedSymptoms.map((sintoma, index) => (
-                  <Box
-                    cursor={"pointer"}
-                    key={sintoma.chave}
-                    className="symptomUnchecked"
-                    onClick={() =>
-                      handleSymptomClick(index, true)
-                    }
-                  >
-                    <Text>{sintoma.nomeSintoma}</Text>
-                  </Box>
-                ))}
+              <div className="bg-azulclaro shadow-lg rounded-lg mt-4">
+                <Input
+                variant={"filled"}
+                  type="text"
+                  placeholder="Buscar sintomas..."
+                  onChange={searchSymptom}
+                  className="mt-4 p-2 rounded border border-gray-400 focus:outline-none focus:border-blue-500"
+                  width={'20rem'}
+                  borderRadius={'200px'}
+                />
+              <div className="mt-4 pb-4 grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6 gap-2">
+                {isSearching
+                  ? sintomasFiltrados.map(
+                    (sintoma, index) => (
+                      <Box
+                        cursor={"pointer"}
+                        key={sintoma.chave}
+                        className="symptomUnchecked"
+                        onClick={() =>
+                          handleSymptomClick(
+                            index,
+                            true
+                          )
+                        }
+                      >
+                        <Text>
+                          {sintoma.nomeSintoma}
+                        </Text>
+                      </Box>
+                    )
+                  )
+                  : unselectedSymptoms.map(
+                    (sintoma, index) => (
+                      <Box
+                        cursor={"pointer"}
+                        key={sintoma.chave}
+                        className="symptomUnchecked"
+                        onClick={() =>
+                          handleSymptomClick(
+                            index,
+                            true
+                          )
+                        }
+                      >
+                        <Text>
+                          {sintoma.nomeSintoma}
+                        </Text>
+                      </Box>
+                    )
+                  )}
               </div>
+            </div>
             )}
           </section>
           <section id="selectedSymptoms">
@@ -382,7 +452,10 @@ useEffect(() => {
             )}
           </section>
         </div>
-        <div id="listaPatologias" className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-4  gap-3 pl-10 pr-10 pt-10">
+        <div
+          id="listaPatologias"
+          className="grid md:grid-cols-1 xl:grid-cols-3 grid-cols-4  gap-3 pl-10 pr-10 pt-10"
+        >
           {filteredAndSortedPatologias.map((patologia) => (
             <div key={"0"} className=" ">
               {/* teste */}

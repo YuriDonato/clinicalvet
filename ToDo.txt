@@ -1,10 +1,1 @@
-Botão para selecionar cachorro ou gato na busca
-
-botao de filtro para cao e gato na pagina clinicpage, o icone é apagadinho e quando aperta ele acende
-
 barra de pesquisa nos sintomas para check
-
-Ficar na ordem de % na busca
-
-
-ATENÇÃO: GATO É CACHORRO E CACHORRO É GATO DGHJSADGHJASGDHJAS
