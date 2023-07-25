@@ -12,7 +12,7 @@ type User = {
     password: string;
 };
 
-export default function registerAdmin() {
+export default function RegisterAdmin() {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
 
