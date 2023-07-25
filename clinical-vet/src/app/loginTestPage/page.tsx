@@ -6,32 +6,69 @@ import {
   Button,
   InputGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, FormEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { database } from "../services/firebase";
+
+type User = {
+  login: string;
+  password: string;
+};
 
 export default function LoginTestPage() {
   const [name, setName] = useState("");
   const [senha, setSenha] = useState("");
-  const trueName = "milaadsg";
-  const truePassword = "0867";
 
   const useRouterPage = useRouter();
 
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const toast = useToast();
+
+  // leitura de DB
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const refUsers = database.ref("users");
+
+    refUsers.on("value", (resultado) => {
+      const resultUser = Object.entries<User>(
+        resultado.val() ?? {}
+      ).map(([chave, valor]) => {
+        return {
+          chave: chave,
+          login: valor.login,
+          password: valor.password
+        };
+      });
+      setUsers(resultUser);
+    });
+  }, []);
 
   function login() {
-    if (name === trueName && senha === truePassword) {
+    const userFound = users.find((user) => user.login === name && user.password === senha);
+  
+    if (userFound) {
       useRouterPage.push("/testPage");
     } else {
+      toast({
+        title: "Nome ou Senha incorretos",
+        description: "Por favor tente novamente",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   }
+
+
   return (
     <div>
-      <Link href={"/"}>
+      <Link href={"/dashboardPage"}>
         {" "}
         <button>
           <img

@@ -61,7 +61,7 @@ export default function LandingPage() {
                         >
                             <Text>ASSINE AGORA</Text>
                         </Text>
-                        <Link href="/dashboard">
+                        <Link href="/dashboardPage">
                             <Text
                                 margin={"0.5rem"}
                                 cursor={"pointer"}
