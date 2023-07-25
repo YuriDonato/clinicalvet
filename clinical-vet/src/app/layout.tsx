@@ -1,9 +1,7 @@
-"use client"
 import './globals.css'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import { Providers } from "./providers";
-import { ChakraProvider } from "@chakra-ui/react";
 
 const montserrat = Montserrat({
   weight: ['400','700'],
@@ -24,9 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <Providers>
-          <ChakraProvider>
             {children}
-          </ChakraProvider>
         </Providers>
       </body>
     </html>
