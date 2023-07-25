@@ -2,31 +2,15 @@
 import { useState, useEffect, useMemo, FormEvent } from "react";
 import styles from "../styles/Dashboard.module.scss";
 import Link from "next/link";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { database } from "../services/firebase";
 import { Text, Box, Button, Circle } from "@chakra-ui/react";
 import { BsArrowRight, BsFillGearFill, BsGearFill } from "react-icons/bs";
 
 export default function LandingPage() {
-    //!! Navbar Opacity Effect
-    const [navbar, setNavbar] = useState(false);
-    const changeBackground = () => {
-        const currentY = window.scrollY;
-        if (currentY >= 100) {
-            setNavbar(true);
-        } else {
-            setNavbar(false);
-        }
-    };
-    window.addEventListener("scroll", changeBackground);
-
     return (
         <div className={styles.bgMain}>
             <Box display={"block"}>
                 <nav
-                    className={`${styles.navBar}, ${
-                        navbar ? `${styles.navBar_active}` : `${styles.navBar}`
-                    }`}
+                    className={styles.navBar}
                 >
                     <Text
                         marginLeft={"1rem"}

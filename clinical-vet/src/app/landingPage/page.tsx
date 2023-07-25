@@ -1,40 +1,36 @@
 "use client";
-import { useState, useEffect, useMemo, FormEvent } from "react";
+import { useState, useEffect } from "react";
 import styles from "../styles/Landing.module.scss";
 import Link from "next/link";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { database } from "../services/firebase";
 import {
     Text,
     Box,
-    CircularProgress,
-    CircularProgressLabel,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-    FormLabel,
-    Input,
-    Icon,
-    IconButton,
     Button,
     Circle,
 } from "@chakra-ui/react";
-import Wave from "../components/Wave";
 
 export default function LandingPage() {
-    //!! Navbar Opacity Effect
-    const [navbar, setNavbar] = useState(false);
-    const changeBackground = () => {
-        const currentY = window.scrollY;
-        if (currentY >= 100) {
-            setNavbar(true);
-        } else {
-            setNavbar(false);
-        }
+  //!! Navbar Opacity Effect
+  const [navbar, setNavbar] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY >= 100) {
+        setNavbar(true);
+      } else {
+        setNavbar(false);
+      }
     };
-    window.addEventListener("scroll", changeBackground);
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
 
     return (
         <div className={styles.bgMain}>

@@ -5,8 +5,6 @@ import { Montserrat } from 'next/font/google'
 import { Providers } from "./providers";
 import { ChakraProvider } from "@chakra-ui/react";
 
-
-
 const montserrat = Montserrat({
   weight: ['400','700'],
   subsets: ['latin'],
@@ -14,7 +12,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: 'Clinical Vet',
-  description: 'A Website that care about you.',
+  description: 'A Website that cares about you.',
 }
 
 export default function RootLayout({
@@ -27,10 +25,10 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <Providers>
           <ChakraProvider>
-          {children}
+            {children}
           </ChakraProvider>
         </Providers>
-        </body>
+      </body>
     </html>
   )
 }
