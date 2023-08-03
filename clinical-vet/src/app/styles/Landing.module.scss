@@ -132,9 +132,8 @@ $corClara: #6bdfdd;
     text-align: left;
     color: white;
     font-size: 24px;
-    /* Nova adição para responsividade */
-    width: 100%; /* Ajuste a largura conforme necessário */
-    max-width: 900px; /* Ajuste o valor conforme necessário */
+    width: 100%; 
+    max-width: 900px; 
     flex-wrap: nowrap;
     &__text1{
         text-align: center;

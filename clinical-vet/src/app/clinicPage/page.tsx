@@ -94,26 +94,28 @@ export default function Clinic() {
 
   // State for storing filtered symptoms
   const [filteredSymptoms, setFilteredSymptoms] = useState<Sintoma[]>([]);
+  
   const [isSearching, setIsSearching] = useState(false);
 
   // Function to filter symptoms based on search
+  const [searchedSymptoms, setSearchedSymptoms] = useState<Sintoma[]>([]);
+
   function searchSymptom(event: FormEvent<HTMLInputElement>) {
     const word = event.currentTarget.value.trim().toLowerCase();
-
+  
     if (word.length > 0) {
       const filteredSymptoms = symptoms.filter(
         (symptom) =>
           symptom.nomeSintoma.toLowerCase().includes(word) &&
-          !selectedSymptoms.some(
-            (selected) => selected.chave === symptom.chave
-          )
+          !selectedSymptoms.some((selected) => selected.chave === symptom.chave)
       );
-
-      setFilteredSymptoms(filteredSymptoms);
+  
+      setSearchedSymptoms(filteredSymptoms);
       setIsSearching(true);
     } else {
-      setFilteredSymptoms([]); // Clear the search if the word is empty
+      setSearchedSymptoms([]); // Clear the searched symptoms
       setIsSearching(false);
+      updateSelectedAndUnselectedSymptoms(); // Update selected and unselected symptoms
     }
   }
 
@@ -186,43 +188,45 @@ export default function Clinic() {
   // State to store the list of selected symptoms
   const [selectedSymptoms, setSelectedSymptoms] = useState<Sintoma[]>([]);
 
-  // Function to handle clicking on a symptom
+  // Function to handle clicking on a symptom when its searching
+  function handleSymptomClickIsSearch(
+    index: number,
+    isUnselected: boolean,
+    filteredSymptoms: Sintoma[]
+  ) {
+    const clickedSymptom = filteredSymptoms[index];
+    setFilteredSymptoms((prevSymptoms) =>
+      prevSymptoms.filter((_, i) => i !== index)
+    );
+  
+    // Check if the clicked symptom is already selected
+    const isAlreadySelected = selectedSymptoms.some(
+      (selected) => selected.chave === clickedSymptom.chave
+    );
+  
+    // Add the symptom to the list of selected symptoms only if it's not already selected
+    if (!isAlreadySelected) {
+      setSelectedSymptoms((prevSymptoms) => [...prevSymptoms, clickedSymptom]);
+    }
+  }
+
+  // When its not searching
   const handleSymptomClick = (index: number, isUnselected: boolean) => {
     if (isUnselected) {
-      // Get the clicked symptom from the list of unselected symptoms
       const clickedSymptom = unselectedSymptoms[index];
-
-      // Remove the symptom from the list of unselected symptoms
       setUnselectedSymptoms((prevSymptoms) =>
         prevSymptoms.filter((_, i) => i !== index)
       );
-
-      // Add the symptom to the list of selected symptoms
-      setSelectedSymptoms((prevSymptoms) => [
-        ...prevSymptoms,
-        clickedSymptom,
-      ]);
+      setSelectedSymptoms((prevSymptoms) => [...prevSymptoms, clickedSymptom]);
     } else {
-      // Otherwise, the symptom is selected, and the treatment is the reverse of the above case
-      // Get the clicked symptom from the list of selected symptoms
       const clickedSymptom = selectedSymptoms[index];
-
-      // Remove the symptom from the list of selected symptoms
       setSelectedSymptoms((prevSymptoms) =>
         prevSymptoms.filter((_, i) => i !== index)
       );
-
-      // Add the symptom to the list of unselected symptoms
-      setUnselectedSymptoms((prevSymptoms) => [
-        ...prevSymptoms,
-        clickedSymptom,
-      ]);
+      setUnselectedSymptoms((prevSymptoms) => [...prevSymptoms, clickedSymptom]);
     }
-
-    // Display the size of the lists of selected and unselected symptoms in the console for debugging purposes
-    console.log(`Selected Symptoms: ${selectedSymptoms.length}`);
-    console.log(`Unselected Symptoms: ${unselectedSymptoms.length}`);
   };
+  
 
   // Populating symptoms for each patologia card
   const [sintomasPorPatologia, setSintomasPorPatologia] = useState<{
@@ -335,6 +339,12 @@ export default function Clinic() {
     setFilteredPatologias(filteredData);
   }, [selectedSymptoms, patologias, catMode]);
 
+  function updateSelectedAndUnselectedSymptoms() {
+    const selectedSymptomKeys = new Set(selectedSymptoms.map((symptom) => symptom.chave));
+    setSelectedSymptoms((prevSelected) => prevSelected.filter((symptom) => selectedSymptomKeys.has(symptom.chave)));
+    setUnselectedSymptoms((prevUnselected) => prevUnselected.filter((symptom) => !selectedSymptomKeys.has(symptom.chave)));
+  }
+
   // Return the HTML
   return (
     <div className="p-10 select-none">
@@ -395,45 +405,27 @@ export default function Clinic() {
                   borderRadius={"200px"}
                 />
                 <div className="mt-4 pb-4 grid md:grid-cols-1 xl:grid-cols-3 grid-cols-6 gap-2">
-                  {isSearching
-                    ? filteredSymptoms.map(
-                      (symptom, index) => (
-                        <Box
-                          cursor={"pointer"}
-                          key={symptom.chave}
-                          className="symptomUnchecked"
-                          onClick={() =>
-                            handleSymptomClick(
-                              index,
-                              true
-                            )
-                          }
-                        >
-                          <Text>
-                            {symptom.nomeSintoma}
-                          </Text>
-                        </Box>
-                      )
-                    )
-                    : unselectedSymptoms.map(
-                      (symptom, index) => (
-                        <Box
-                          cursor={"pointer"}
-                          key={symptom.chave}
-                          className="symptomUnchecked"
-                          onClick={() =>
-                            handleSymptomClick(
-                              index,
-                              true
-                            )
-                          }
-                        >
-                          <Text>
-                            {symptom.nomeSintoma}
-                          </Text>
-                        </Box>
-                      )
-                    )}
+                {isSearching
+  ? searchedSymptoms.map((symptom, index) => (
+      <Box
+        cursor={"pointer"}
+        key={symptom.chave}
+        className="symptomUnchecked"
+        onClick={() => handleSymptomClickIsSearch(index, true, searchedSymptoms)}
+      >
+        <Text>{symptom.nomeSintoma}</Text>
+      </Box>
+    ))
+  : unselectedSymptoms.map((symptom, index) => (
+      <Box
+        cursor={"pointer"}
+        key={symptom.chave}
+        className="symptomUnchecked"
+        onClick={() => handleSymptomClick(index, true)}
+      >
+        <Text>{symptom.nomeSintoma}</Text>
+      </Box>
+    ))}
                 </div>
               </div>
             )}
