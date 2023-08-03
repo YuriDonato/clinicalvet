@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import { Providers } from "./providers";
 
-
 const montserrat = Montserrat({
   weight: ['400','700'],
   subsets: ['latin'],
@@ -11,7 +10,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: 'Clinical Vet',
-  description: 'A Website that care about you.',
+  description: 'A Website that cares about you.',
 }
 
 export default function RootLayout({
@@ -23,9 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <Providers>
-          {children}
+            {children}
         </Providers>
-        </body>
+      </body>
     </html>
   )
 }

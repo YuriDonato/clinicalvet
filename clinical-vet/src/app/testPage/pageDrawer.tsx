@@ -13,6 +13,8 @@ import { PiCatLight, PiDogLight } from "react-icons/pi"
 import {IoIosCheckmarkCircleOutline, IoIosCloseCircleOutline} from "react-icons/io"
 import { useEffect, useState } from "react";
 import { database } from "../services/firebase";
+import { useToast } from "@chakra-ui/react";
+
 
 type Patologia = {
     chave: string;
@@ -53,6 +55,8 @@ type PatologiaDrawerProps = {
 
 const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, patologia }) => {
     const [sintomas, setSintomas] = useState<{ [key: string]: Sintoma }>({});
+    const toast = useToast();
+
 
     useEffect(() => {
         const refSintomas = database.ref("sintomas");
@@ -68,6 +72,15 @@ const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, pato
         .map((chave) => sintomas[chave]?.nomeSintoma)
         .filter((nomeSintoma) => nomeSintoma !== undefined);
 
+    function mostrarChaveSintoma(patologia: Patologia){
+        toast({
+            title: "A chave correspondente é:",
+            description: `A chave: ${patologia.sintomas}`,
+            status: "success",
+            duration: 4000,
+            isClosable: true,
+        });
+    }
 
     return (
         <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -145,7 +158,7 @@ const PatologiaDrawer: React.FC<PatologiaDrawerProps> = ({ isOpen, onClose, pato
                             <Text>{patologia.tratamento}</Text>
                             <Text fontWeight={'bold'}>Sintomas: </Text>
                             {sintomasNomes.map((nome) => (
-                                <Text key={nome}>{nome}</Text>
+                                <Text onClick={() => mostrarChaveSintoma(patologia)} key={nome}>{nome}</Text>
                             ))}
                         </Box>
                     </Stack>

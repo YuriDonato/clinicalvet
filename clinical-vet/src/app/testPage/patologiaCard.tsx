@@ -1,3 +1,4 @@
+"use client"
 // PatologiaCard.tsx
 import { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";

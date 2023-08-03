@@ -72,6 +72,16 @@ export default function Home() {
                     <h2 className="linkText">AMBIENTE DE TESTES</h2>
                 </Link>
             </div>
+            <div className="option">
+                <Link href="/landingPage">
+                    <img
+                        className="circleImage linkImage"
+                        src="test.jpg"
+                        alt=""
+                    />
+                    <h2 className="linkText">LANDING PAGE</h2>
+                </Link>
+            </div>
         </center>
     );
 }

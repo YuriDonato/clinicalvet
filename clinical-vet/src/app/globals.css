@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 @import './styles/main.css';
+
+/* Css para Transição */
+
+.transition2s{
+    transition: 0.25s ease all;
+}
