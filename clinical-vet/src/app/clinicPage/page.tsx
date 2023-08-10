@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, FormEvent } from "react";
 import Link from "next/link";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { database } from "../services/firebase";
+import { database } from "@/app/services/firebase";
 import {
   Text,
   Box,
