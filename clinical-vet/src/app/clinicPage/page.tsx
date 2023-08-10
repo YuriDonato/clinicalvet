@@ -102,14 +102,12 @@ export default function Clinic() {
 
   function searchSymptom(event: FormEvent<HTMLInputElement>) {
     const word = event.currentTarget.value.trim().toLowerCase();
-  
     if (word.length > 0) {
       const filteredSymptoms = symptoms.filter(
         (symptom) =>
           symptom.nomeSintoma.toLowerCase().includes(word) &&
           !selectedSymptoms.some((selected) => selected.chave === symptom.chave)
       );
-  
       setSearchedSymptoms(filteredSymptoms);
       setIsSearching(true);
     } else {
