@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/Landing.module.scss";
 import Link from "next/link";
-import { Text, Box, Button, Circle } from "@chakra-ui/react";
+import { Text, Box, Button } from "@chakra-ui/react";
 
 export default function LandingPage() {
     //!! Navbar Opacity Effect
@@ -98,6 +98,7 @@ export default function LandingPage() {
                         <Button className={styles.assine}>Assine Agora</Button>
                     </Box>
                 </section>
+                {/* <div className={styles.waveHorizontal}></div> */}
                 <section id="textOnWave">
                     <Box
                         justifyContent={"space-evenly"}

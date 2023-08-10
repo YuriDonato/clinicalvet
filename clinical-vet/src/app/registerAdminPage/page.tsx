@@ -5,7 +5,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState, FormEvent } from "react";
-import { database } from "../services/firebase";
+import { database } from "@/app/services/firebase";
 
 type User = {
     login: string;

@@ -253,8 +253,15 @@ $corClara: #6bdfdd;
 
 @media (max-width: 1225px){
     .bgMain{
-        background-color: $corMedia;
+        background-color: white;
         background-image: none;
+    }
+
+    .waveHorizontal{
+        width: 100vw;
+        height: 100vh;
+        overflow-y: hidden;
+        background-image: url(/wave-horizontal.svg);
     }
 
     .textOverWave_logo {
@@ -291,7 +298,7 @@ $corClara: #6bdfdd;
         background-color: $corMedia;
         padding: 2rem;
         flex-direction: column;
-        margin-top: 10vw;
+        margin-top: 0vw;
         margin-left: 0vw;
         text-align: center;
         color: white;
