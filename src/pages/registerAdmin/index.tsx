@@ -31,7 +31,7 @@ const RegisterAdmin = () => {
   }
   return (
     <RegisterPageContainer>
-      <ReturnButton customRoute="/admin" />
+      <ReturnButton customRoute="admin" />
       <Textarea
         display={'block'}
         width={'fit-content'}

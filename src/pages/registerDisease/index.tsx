@@ -473,7 +473,7 @@ const RegisterDisease = () => {
   return (
     <>
       <div>
-        <ReturnButton customRoute="/admin" />
+        <ReturnButton customRoute="admin" />
         <center>
           <Tabs
             // className={styles.container}
