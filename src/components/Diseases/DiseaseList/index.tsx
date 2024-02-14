@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { Patologia } from '../../../models/Clinic'
+import { Link } from 'react-router-dom'
 import {
   Accordion,
   AccordionButton,
@@ -62,7 +63,7 @@ const DiseaseList: React.FC<DiseaseListProps> = ({
               </AccordionButton>
               <CustomAccordionPanel>
                 <Descricao>{patologia.descricao}</Descricao>
-                <Button to="/">Ler mais</Button>
+                <Button to={`/disease/${patologia.chave}`}>Ler mais</Button>
               </CustomAccordionPanel>
             </CustomAccordionItem>
           </Accordion>

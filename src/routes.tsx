@@ -8,6 +8,7 @@ import Login from './pages/Login'
 import RegisterAdmin from './pages/registerAdmin'
 import RegisterDisease from './pages/registerDisease'
 import Admin from './pages/Admin'
+import DiseaseDetails from './pages/DiseaseDetails'
 
 const Rotas = () => {
   return (
@@ -22,6 +23,7 @@ const Rotas = () => {
       <Route path="/admin/registerAdmin" element={<RegisterAdmin />} />
       <Route path="/admin/registerDisease" element={<RegisterDisease />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/disease/:key" element={<DiseaseDetails />} />
     </Routes>
   )
 }

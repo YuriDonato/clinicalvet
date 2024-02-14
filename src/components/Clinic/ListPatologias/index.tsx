@@ -182,7 +182,7 @@ const ListPatologias: React.FC<ListPatologiasProps> = ({
                     <li key={nomeSintoma}>{nomeSintoma}</li>
                   ))}
                 </ListaSintomas>
-                <Button to="/">Ler mais</Button>
+                <Button to={`/disease/${patologia.chave}`}>Ler mais</Button>
               </AccordionPanel>
             </CustomAccordionItem>
           </Accordion>

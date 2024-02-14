@@ -9,7 +9,7 @@ type Props = {
 
 const ReturnButton = ({ customRoute = '' }: Props) => {
   return (
-    <Link to={customRoute?.length > 0 ? '/admin' : '/'}>
+    <Link to={`/${customRoute}`}>
       <S.Button>
         <S.Img src={arrowright} alt="" />
       </S.Button>
