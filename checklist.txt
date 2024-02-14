@@ -1,0 +1,14 @@
+Dashboard - Done
+Clinic - Done
+Disease - Done
+Login - Done
+registerDisease - Temp Visual Done
+AdminPage - Temp Visual Done
+registerAdmin - Temp Visual Done
+Hemo - WIP
+LandingPage - WIP
+
+
+Falta:
+  Criar subpaginas utilizando do useParams do react router dom
+ para cada patologia e para cada sintoma
