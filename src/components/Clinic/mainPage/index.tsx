@@ -61,7 +61,11 @@ const MainPage = () => {
           return {
             chave: chave,
             nomePatologia: valor.nomePatologia,
-            causador: valor.causador,
+            causador: {
+              bacteria: valor.causador.bacteria,
+              fungo: valor.causador.fungo,
+              virus: valor.causador.virus
+            },
             descricao: valor.descricao,
             diagnostico: valor.diagnostico,
             prevalencia: {

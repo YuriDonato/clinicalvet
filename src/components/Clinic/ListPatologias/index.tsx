@@ -98,7 +98,6 @@ const ListPatologias: React.FC<ListPatologiasProps> = ({
         }
         return acc
       }, []) // Using reduce to avoid duplicates
-    console.log(`Sintomas nomes: ${sintomasNomes}`)
     return sintomasNomes
   }
 

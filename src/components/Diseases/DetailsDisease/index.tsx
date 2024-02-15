@@ -8,7 +8,7 @@ interface DiseaseDetailsProps {
 const DetailsDisease: React.FC<DiseaseDetailsProps> = ({ patologia }) => {
   return (
     <>
-      <ReturnButton customRoute="disease" />
+      <ReturnButton customRoute="" />
       <h1>{patologia.nomePatologia}</h1>
       <p>{patologia.descricao}</p>
     </>
