@@ -14,7 +14,8 @@ import {
   HStack,
   Box,
   Grid,
-  GridItem
+  GridItem,
+  useToast
 } from '@chakra-ui/react'
 
 const RegisterDiseaseTab: React.FC = () => {
@@ -46,6 +47,8 @@ const RegisterDiseaseTab: React.FC = () => {
     prognostico: '',
     sintomas: []
   }
+
+  const toast = useToast()
 
   const [patologiaData, setPatologiaData] =
     useState<Patologia>(emptyPatologiaData)
@@ -85,6 +88,13 @@ const RegisterDiseaseTab: React.FC = () => {
     setPatologiaData(emptyPatologiaData)
     setCausadorData('')
     setSelectedSymptoms([])
+    toast({
+      title: 'Doença criada com sucesso!',
+      status: 'success',
+      position: 'bottom',
+      duration: 9000,
+      isClosable: true
+    })
   }
 
   const handleSymptomChange = (chave: string) => {

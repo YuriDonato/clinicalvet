@@ -14,7 +14,9 @@ import {
   Radio,
   HStack,
   Grid,
-  GridItem
+  GridItem,
+  Flex,
+  useToast
 } from '@chakra-ui/react'
 
 const EditDiseaseTab: React.FC = () => {
@@ -24,6 +26,8 @@ const EditDiseaseTab: React.FC = () => {
   const [symptoms, setSymptoms] = useState<Sintoma[]>([])
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState<string>('')
+
+  const toast = useToast()
 
   useEffect(() => {
     const fetchPatologias = async () => {
@@ -90,16 +94,9 @@ const EditDiseaseTab: React.FC = () => {
     }
   }, [selectedDisease])
 
-  function teste() {
-    setSelectedDisease((prev) => ({
-      ...prev!,
-      sintomas: ['']
-    }))
-  }
   // Handler do causador
   useEffect(() => {
     if (selectedDisease && causadorData) {
-      teste()
       if (causadorData === 'bacteria') {
         setSelectedDisease((prevSelectedDisease) => ({
           ...prevSelectedDisease!,
@@ -153,8 +150,24 @@ const EditDiseaseTab: React.FC = () => {
       )
       setPatologias(patologias.filter((p) => p.chave !== selectedDisease.chave))
       setSelectedDisease(null)
+      toast({
+        title: 'Doença excluida com sucesso!',
+        status: 'success',
+        position: 'bottom',
+        duration: 9000,
+        isClosable: true
+      })
     } catch (error) {
       console.error('Erro ao excluir a doença:', error)
+      toast({
+        title: 'Erro ao excluir a doença',
+        description:
+          'Fale pro desenvolvedor que houve um erro ao excluir a doença',
+        status: 'error',
+        position: 'bottom',
+        duration: 9000,
+        isClosable: true
+      })
     }
   }
 
@@ -189,8 +202,24 @@ const EditDiseaseTab: React.FC = () => {
         ...selectedDisease,
         sintomas: selectedSymptoms
       })
+      toast({
+        title: 'Doença atualizada com sucesso!',
+        status: 'success',
+        position: 'bottom',
+        duration: 9000,
+        isClosable: true
+      })
     } catch (error) {
       console.error('Erro ao atualizar a doença:', error)
+      toast({
+        title: 'Erro ao atualizar a doença',
+        description:
+          'Fale pro desenvolvedor que houve um erro ao atualizar a doença',
+        status: 'error',
+        position: 'bottom',
+        duration: 9000,
+        isClosable: true
+      })
     }
   }
 
@@ -198,26 +227,38 @@ const EditDiseaseTab: React.FC = () => {
     sintoma.nomeSintoma.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const filteredDiseases = patologias.filter((patologia) =>
+    patologia.nomePatologia.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   return (
-    <>
-      <Box>
-        <Text fontSize="xl" fontWeight="bold" mb={4}>
-          Lista de Doenças
-        </Text>
-        {patologias.map((patologia) => (
-          <Button
-            key={patologia.chave}
-            onClick={() => handleSelectDisease(patologia)}
-            colorScheme={
-              selectedDisease?.chave === patologia.chave ? 'teal' : 'gray'
-            }
-            variant="outline"
-            mr={2}
-            mb={2}
-          >
-            {patologia.nomePatologia}
-          </Button>
-        ))}
+    <Flex gap="1rem">
+      <Box flex="1">
+        <Box>
+          <Text fontSize="xl" fontWeight="bold" mb={4}>
+            Lista de Doenças
+          </Text>
+          <Input
+            placeholder="Pesquisar doença..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            mb={4}
+          />
+          {filteredDiseases.map((patologia) => (
+            <Button
+              key={patologia.chave}
+              onClick={() => handleSelectDisease(patologia)}
+              colorScheme={
+                selectedDisease?.chave === patologia.chave ? 'teal' : 'gray'
+              }
+              variant="outline"
+              mr={2}
+              mb={2}
+            >
+              {patologia.nomePatologia}
+            </Button>
+          ))}
+        </Box>
       </Box>
       {selectedDisease && (
         <Box mt={8}>
@@ -425,7 +466,7 @@ const EditDiseaseTab: React.FC = () => {
           </FormControl>
         </Box>
       )}
-    </>
+    </Flex>
   )
 }
 

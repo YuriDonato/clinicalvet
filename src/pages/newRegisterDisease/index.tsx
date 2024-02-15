@@ -3,6 +3,8 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { Container } from '../../components/Clinic/mainPage/styles'
 import ReturnButton from '../../components/returnButton'
 import EditDiseaseTab from '../../components/Admin/registerDisease/Edit'
+import RegisterSymptomTab from '../../components/Admin/registerSymptom/Register'
+import EditSymptomTab from '../../components/Admin/registerSymptom/Edit'
 
 const NewRegisterDisease = () => {
   return (
@@ -33,15 +35,15 @@ const NewRegisterDisease = () => {
           <TabPanel>
             <Tabs isFitted variant="soft-rounded" colorScheme="red">
               <TabList mb="1em">
-                <Tab>Cadastrar</Tab>
+                <Tab>Registrar</Tab>
                 <Tab>Editar</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <p>Registro Sintomas</p>
+                  <RegisterSymptomTab />
                 </TabPanel>
                 <TabPanel>
-                  <p>Editar Sintomas</p>
+                  <EditSymptomTab />
                 </TabPanel>
               </TabPanels>
             </Tabs>
