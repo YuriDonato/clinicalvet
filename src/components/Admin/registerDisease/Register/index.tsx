@@ -1,21 +1,23 @@
 import React, { useState, FormEvent, useEffect } from 'react'
-import { Patologia } from '../../../../models/Clinic'
+import { Patologia, Sintoma } from '../../../../models/Clinic'
 import * as db from '../../../../services/firebase'
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Button,
-  RadioGroup,
-  HStack,
-  Radio,
+  Select,
   Checkbox,
-  Stack
+  Stack,
+  RadioGroup,
+  Radio,
+  HStack,
+  Box,
+  Grid,
+  GridItem
 } from '@chakra-ui/react'
 
-const RegisterDiseaseTab = () => {
+const RegisterDiseaseTab: React.FC = () => {
   const emptyPatologiaData: Patologia = {
     chave: '',
     nomePatologia: '',
@@ -49,49 +51,59 @@ const RegisterDiseaseTab = () => {
     useState<Patologia>(emptyPatologiaData)
 
   const [causadorData, setCausadorData] = useState('')
+  const [symptoms, setSymptoms] = useState<Sintoma[]>([])
+  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
+  const [searchTerm, setSearchTerm] = useState<string>('')
+
+  useEffect(() => {
+    const fetchSymptoms = async () => {
+      const refSintomas = db.ref(db.database, 'sintomas')
+      db.onValue(refSintomas, (snapshot) => {
+        const data = snapshot.val()
+        const resultadoSintomas = Object.entries<Sintoma>(data ?? {}).map(
+          ([chave, valor]) => {
+            return {
+              chave: chave,
+              nomeSintoma: valor.nomeSintoma
+            }
+          }
+        )
+        setSymptoms(resultadoSintomas)
+      })
+    }
+
+    fetchSymptoms()
+  }, [])
 
   const createPathologyData = async (event: FormEvent) => {
     event.preventDefault()
+    // Adicione os sintomas selecionados aos dados da patologia
+    const newData = { ...patologiaData, sintomas: selectedSymptoms }
     const newKey = db.push(db.child(db.ref(db.database), 'patologias')).key
-    patologiaData.chave = newKey!
-    db.set(db.ref(db.database, `patologias/${newKey}`), patologiaData)
+    newData.chave = newKey!
+    db.set(db.ref(db.database, `patologias/${newKey}`), newData)
     setPatologiaData(emptyPatologiaData)
     setCausadorData('')
+    setSelectedSymptoms([])
   }
 
-  useEffect(() => {
-    if (causadorData === 'bacteria') {
-      setPatologiaData({
-        ...patologiaData,
-        causador: {
-          ...patologiaData.causador,
-          bacteria: true,
-          fungo: false,
-          virus: false
-        }
-      })
-    } else if (causadorData === 'fungo') {
-      setPatologiaData({
-        ...patologiaData,
-        causador: {
-          ...patologiaData.causador,
-          bacteria: false,
-          fungo: true,
-          virus: false
-        }
-      })
-    } else if (causadorData === 'virus') {
-      setPatologiaData({
-        ...patologiaData,
-        causador: {
-          ...patologiaData.causador,
-          bacteria: false,
-          fungo: false,
-          virus: true
-        }
-      })
+  const handleSymptomChange = (chave: string) => {
+    // Verifique se o sintoma já está selecionado
+    const isSelected = selectedSymptoms.includes(chave)
+    if (isSelected) {
+      // Se estiver selecionado, remova-o da lista de sintomas selecionados
+      setSelectedSymptoms(
+        selectedSymptoms.filter((symptom) => symptom !== chave)
+      )
+    } else {
+      // Se não estiver selecionado, adicione-o à lista de sintomas selecionados
+      setSelectedSymptoms([...selectedSymptoms, chave])
     }
-  }, [causadorData])
+  }
+
+  const filteredSymptoms = symptoms.filter((sintoma) =>
+    sintoma.nomeSintoma.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
     <>
@@ -300,6 +312,28 @@ const RegisterDiseaseTab = () => {
             }
             type="text"
           />
+          <FormLabel>Sintomas</FormLabel>
+          <Box>
+            <Input
+              placeholder="Pesquisar sintoma..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Box>
+          <Stack spacing={3} mt={4} maxH="200px" overflowY="auto">
+            <Grid templateColumns="repeat(2, 1fr)" gap={3}>
+              {filteredSymptoms.map((sintoma) => (
+                <GridItem key={sintoma.chave}>
+                  <Checkbox
+                    isChecked={selectedSymptoms.includes(sintoma.chave)}
+                    onChange={() => handleSymptomChange(sintoma.chave)}
+                  >
+                    {sintoma.nomeSintoma}
+                  </Checkbox>
+                </GridItem>
+              ))}
+            </Grid>
+          </Stack>
         </FormControl>
         <Button marginTop={'1rem'} type="submit">
           Criar Patologia

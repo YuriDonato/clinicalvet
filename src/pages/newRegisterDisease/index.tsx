@@ -2,6 +2,7 @@ import RegisterDiseaseTab from '../../components/Admin/registerDisease/Register'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { Container } from '../../components/Clinic/mainPage/styles'
 import ReturnButton from '../../components/returnButton'
+import EditDiseaseTab from '../../components/Admin/registerDisease/Edit'
 
 const NewRegisterDisease = () => {
   return (
@@ -24,7 +25,7 @@ const NewRegisterDisease = () => {
                   <RegisterDiseaseTab />
                 </TabPanel>
                 <TabPanel>
-                  <p>Editar</p>
+                  <EditDiseaseTab />
                 </TabPanel>
               </TabPanels>
             </Tabs>
