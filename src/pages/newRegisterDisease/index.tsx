@@ -6,7 +6,7 @@ import EditDiseaseTab from '../../components/Admin/registerDisease/Edit'
 import RegisterSymptomTab from '../../components/Admin/registerSymptom/Register'
 import EditSymptomTab from '../../components/Admin/registerSymptom/Edit'
 
-const NewRegisterDisease = () => {
+const RegisterDisease = () => {
   return (
     <Container>
       <ReturnButton />
@@ -54,4 +54,4 @@ const NewRegisterDisease = () => {
   )
 }
 
-export default NewRegisterDisease
+export default RegisterDisease

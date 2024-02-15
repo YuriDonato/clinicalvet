@@ -8,7 +8,7 @@ import Login from './pages/Login'
 import RegisterAdmin from './pages/registerAdmin'
 import Admin from './pages/Admin'
 import DiseaseDetails from './pages/DiseaseDetails'
-import NewRegisterDisease from './pages/newRegisterDisease'
+import RegisterDisease from './pages/newRegisterDisease'
 
 const Rotas = () => {
   return (
@@ -21,10 +21,7 @@ const Rotas = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/landingPage" element={<Landing />} />
       <Route path="/admin/registerAdmin" element={<RegisterAdmin />} />
-      <Route
-        path="/admin/newRegisterDisease"
-        element={<NewRegisterDisease />}
-      />
+      <Route path="/admin/registerDisease" element={<RegisterDisease />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/disease/:key" element={<DiseaseDetails />} />
     </Routes>
