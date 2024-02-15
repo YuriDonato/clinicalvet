@@ -6,9 +6,9 @@ import Hemo from './pages/Hemo'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import RegisterAdmin from './pages/registerAdmin'
-import RegisterDisease from './pages/registerDisease'
 import Admin from './pages/Admin'
 import DiseaseDetails from './pages/DiseaseDetails'
+import RegisterDisease from './pages/newRegisterDisease'
 
 const Rotas = () => {
   return (

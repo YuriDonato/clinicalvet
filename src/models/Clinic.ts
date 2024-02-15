@@ -1,7 +1,11 @@
 export type Patologia = {
   chave: string
   nomePatologia: string
-  causador: string
+  causador: {
+    bacteria: boolean
+    fungo: boolean
+    virus: boolean
+  }
   descricao: string
   diagnostico: string
   prevalencia: {

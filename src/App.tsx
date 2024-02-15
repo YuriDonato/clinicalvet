@@ -15,12 +15,12 @@ const theme = extendTheme({
 
 function App() {
   return (
-    <BrowserRouter>
-      <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>
         <GlobalCss />
         <Rotas />
-      </ChakraProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ChakraProvider>
   )
 }
 
