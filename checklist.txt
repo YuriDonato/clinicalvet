@@ -9,3 +9,9 @@ AdminPage - Temp Visual Done
 registerAdmin - Temp Visual Done
 Hemo - WIP
 LandingPage - WIP
+
+A fazer:
+ - Separar as categorias de patologias bacterianas e virais
+ - Bug que quando escreve clica no sintoma e dps tira, ele continua sem sumir causando o sintoma duplicado
+ - No cadastro ta marcado gato msm qnd é cachorro
+ - No cadastro de doenças, por sintomas também
