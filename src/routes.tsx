@@ -8,7 +8,7 @@ import Login from './pages/Login'
 import RegisterAdmin from './pages/registerAdmin'
 import Admin from './pages/Admin'
 import DiseaseDetails from './pages/DiseaseDetails'
-import RegisterDisease from './pages/newRegisterDisease'
+import RegisterDisease from './pages/RegisterDisease'
 
 const Rotas = () => {
   return (
