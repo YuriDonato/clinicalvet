@@ -1,9 +1,9 @@
-import { DashboardOptions } from '../../../data/DashboardOptions'
+import { DashboardToolsOptions } from '../../../data/DashboardOptions'
 import Option from '../Option'
 import { OptionsContainer } from '../styles'
 
-const OptionContainer = () => {
-  const options = DashboardOptions
+const OptionToolsContainer = () => {
+  const options = DashboardToolsOptions
   return (
     <OptionsContainer>
       {options.map((o) => (
@@ -13,4 +13,4 @@ const OptionContainer = () => {
   )
 }
 
-export default OptionContainer
+export default OptionToolsContainer
