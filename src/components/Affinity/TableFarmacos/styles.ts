@@ -10,17 +10,17 @@ export const Container = styled.div`
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   @media (max-width: 950px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   @media (max-width: 767px) {
+    gap: 2rem;
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `
 
-export const SelectedsContainer = styled.div`
-  display: flex;
-  justify-content: space-evenly;
+export const SelectedsContainer = styled(Container)`
   margin-bottom: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 `
 
 export const SelectedContainer = styled.div`

@@ -159,7 +159,7 @@ const TableFarmacos: React.FC<Props> = ({ farmacos, categorias }) => {
             </S.SelectedContainer>
           )}
         </Droppable>
-        <S.PlusSignal>+</S.PlusSignal>
+        <S.PlusSignal></S.PlusSignal>
 
         <Droppable droppableId="top-right">
           {(provided) => (
