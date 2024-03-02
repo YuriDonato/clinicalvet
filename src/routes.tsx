@@ -24,7 +24,7 @@ const Rotas = () => {
       <Route path="/disease/:key" element={<DiseaseDetails />} />
       <Route path="/tools" element={<Tools />} />
       <Route path="/tools/hemo" element={<Hemo />} />
-      <Route path="/tools/fluidtherapy" element={<FluidTherapy />} />
+      <Route path="/tools/fluid" element={<FluidTherapy />} />
       <Route path="/tools/affinity" element={<DrugAffinity />} />
       <Route path="/login" element={<Login />} />
       <Route path="/admin" element={<Admin />} />
