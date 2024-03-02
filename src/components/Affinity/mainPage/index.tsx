@@ -12,6 +12,7 @@ import ReturnButton from '../../returnButton'
 import { CircularProgress } from '@chakra-ui/react'
 import { Categoria, Farmaco } from '../../../models/Drug'
 import TableFarmacos from '../TableFarmacos'
+import TableFarmacosVDois from '../TableFarmacosV2'
 
 const MainPage = () => {
   const [selectedCategorias, setSelectedCategorias] = useState<Categoria[]>([])
@@ -83,7 +84,8 @@ const MainPage = () => {
         </PageContainer>
       ) : (
         <PageContainer>
-          <TableFarmacos farmacos={farmacos} categorias={categorias} />
+          {/* <TableFarmacos farmacos={farmacos} categorias={categorias} /> */}
+          <TableFarmacosVDois farmacos={farmacos} categorias={categorias} />
         </PageContainer>
       )}
     </Container>
