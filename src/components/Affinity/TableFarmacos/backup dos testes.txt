@@ -1,25 +1,116 @@
 import { Categoria, Farmaco } from '../../../models/Drug'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import React, { useState } from 'react'
 
-// teste:
 interface Props {
   farmacos: Farmaco[]
   categorias: Categoria[]
 }
 
 const TableFarmacos: React.FC<Props> = ({ farmacos, categorias }) => {
-  const newFarmacos = farmacos
+  const [farmacoz, updateFarmacos] = useState(farmacos)
+  const [topLeftCard, setTopLeftCard] = useState<Farmaco | null>(null)
+  const [topRightCard, setTopRightCard] = useState<Farmaco | null>(null)
+
   function handleOnDragEnd(result: any) {
+    console.log(result)
     if (!result.destination) return
+    if (result.destination.droppableId == 'top-left') {
+      handleDragEndTop(result, 'top-left')
+    }
+    if (result.destination.droppableId == 'top-right') {
+      handleDragEndTop(result, 'top-right')
+    }
+
+    const items = Array.from(farmacoz)
+    const [reorderedItem] = items.splice(result.source.index, 1)
+    items.splice(result.destination.index, 0, reorderedItem)
+
+    updateFarmacos(items)
+  }
+
+  const handleDragEndTop = (result: any, cardType: string) => {
+    const draggedFarmaco = farmacoz[result.source.index]
+
+    if (cardType === 'top-left') {
+      setTopLeftCard(draggedFarmaco)
+    } else if (cardType === 'top-right') {
+      setTopRightCard(draggedFarmaco)
+    }
+
+    const newFarmacos = farmacoz.filter(
+      (farmaco, index) => index !== result.source.index
+    )
+    updateFarmacos(newFarmacos)
   }
 
   return (
     <>
       <DragDropContext onDragEnd={handleOnDragEnd}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Droppable droppableId="top-left">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{
+                  width: 200,
+                  height: 100,
+                  border: '1px dashed gray',
+                  marginBottom: '10px'
+                }}
+              >
+                {topLeftCard ? (
+                  <div>{topLeftCard.nomeFarmaco}</div>
+                ) : (
+                  <div
+                    style={{
+                      height: '50px',
+                      border: '1px dashed gray',
+                      marginBottom: '10px'
+                    }}
+                  >
+                    Drop card here
+                  </div>
+                )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <Droppable droppableId="top-right">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{
+                  width: 200,
+                  height: 100,
+                  border: '1px dashed gray',
+                  marginBottom: '10px'
+                }}
+              >
+                {topRightCard ? (
+                  <div>{topRightCard.nomeFarmaco}</div>
+                ) : (
+                  <div
+                    style={{
+                      height: '50px',
+                      border: '1px dashed gray',
+                      marginBottom: '10px'
+                    }}
+                  >
+                    Drop card here
+                  </div>
+                )}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
         <Droppable droppableId="farmacos">
           {(provided) => (
             <ul {...provided.droppableProps} ref={provided.innerRef}>
-              {newFarmacos.map((f, index) => (
+              {farmacoz.map((f, index) => (
                 <Draggable key={f.chave} draggableId={f.chave} index={index}>
                   {(provided) => (
                     <li

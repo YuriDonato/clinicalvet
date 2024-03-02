@@ -1,0 +1,15 @@
+{
+  "draggableId": "-NrwHOQtfbeAVHcFM6pC",
+  "type": "DEFAULT",
+  "source": {
+      "index": 1,
+      "droppableId": "top-left"
+  },
+  "reason": "DROP",
+  "mode": "FLUID",
+  "destination": {
+      "droppableId": "bottom",
+      "index": 1
+  },
+  "combine": null
+}

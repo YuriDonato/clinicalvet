@@ -1,5 +1,11 @@
+import ReturnButton from '../../components/returnButton'
+
 const Hemo = () => {
-  return <></>
+  return (
+    <>
+      <ReturnButton customRoute="tools" />
+    </>
+  )
 }
 
 export default Hemo
