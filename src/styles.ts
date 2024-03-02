@@ -36,3 +36,23 @@ export const PageContainer = styled.div`
   margin: 0 auto;
   width: 100%;
 `
+export const MainCard = styled.div`
+  margin: 0 auto 0 auto;
+  color: black;
+  padding: 1rem;
+  background-color: white;
+  max-width: 600px;
+  display: block;
+  // border-bottom-right-radius: 2rem;
+  // border-bottom-left-radius: 2rem;
+`
+
+export const Container = styled(MainCard)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`

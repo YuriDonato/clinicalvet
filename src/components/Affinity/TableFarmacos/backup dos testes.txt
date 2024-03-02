@@ -1,0 +1,44 @@
+import { Categoria, Farmaco } from '../../../models/Drug'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+
+// teste:
+interface Props {
+  farmacos: Farmaco[]
+  categorias: Categoria[]
+}
+
+const TableFarmacos: React.FC<Props> = ({ farmacos, categorias }) => {
+  const newFarmacos = farmacos
+  function handleOnDragEnd(result: any) {
+    if (!result.destination) return
+  }
+
+  return (
+    <>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="farmacos">
+          {(provided) => (
+            <ul {...provided.droppableProps} ref={provided.innerRef}>
+              {newFarmacos.map((f, index) => (
+                <Draggable key={f.chave} draggableId={f.chave} index={index}>
+                  {(provided) => (
+                    <li
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      {f.nomeFarmaco}
+                    </li>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
+  )
+}
+
+export default TableFarmacos

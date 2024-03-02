@@ -9,21 +9,25 @@ import RegisterAdmin from './pages/registerAdmin'
 import Admin from './pages/Admin'
 import DiseaseDetails from './pages/DiseaseDetails'
 import RegisterDisease from './pages/RegisterDisease'
+import FluidTherapy from './pages/FluidTherapy'
+import DrugAffinity from './pages/DrugAffinity'
 
 const Rotas = () => {
   return (
     <Routes>
-      <Route path="/clinic" element={<Clinic />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/disease" element={<Disease />} />
-      <Route path="/hemo" element={<Hemo />} />
       <Route path="/" element={<Dashboard />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/landingPage" element={<Landing />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/clinic" element={<Clinic />} />
+      <Route path="/disease" element={<Disease />} />
+      <Route path="/disease/:key" element={<DiseaseDetails />} />
+      <Route path="/hemo" element={<Hemo />} />
+      <Route path="/fluidtherapy" element={<FluidTherapy />} />
+      <Route path="/affinity" element={<DrugAffinity />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin" element={<Admin />} />
       <Route path="/admin/registerAdmin" element={<RegisterAdmin />} />
       <Route path="/admin/registerDisease" element={<RegisterDisease />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/disease/:key" element={<DiseaseDetails />} />
     </Routes>
   )
 }
