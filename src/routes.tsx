@@ -12,6 +12,7 @@ import RegisterDisease from './pages/RegisterDisease'
 import FluidTherapy from './pages/FluidTherapy'
 import DrugAffinity from './pages/DrugAffinity'
 import Tools from './pages/Tools'
+import Teste from './pages/Teste'
 
 const Rotas = () => {
   return (
@@ -26,6 +27,7 @@ const Rotas = () => {
       <Route path="/tools/hemo" element={<Hemo />} />
       <Route path="/tools/fluid" element={<FluidTherapy />} />
       <Route path="/tools/affinity" element={<DrugAffinity />} />
+      <Route path="/tools/teste" element={<Teste />} />
       <Route path="/login" element={<Login />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/registerAdmin" element={<RegisterAdmin />} />

@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components'
 export const cores = {
   azulEscuro: '#69c1c4',
   azulClaro: '#a5d9db',
-  branca: '#fff',
+  branca: '#fffff',
   preta: '#000',
   cinzaTexto: '#4B5563'
 }

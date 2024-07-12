@@ -15,3 +15,6 @@ A fazer:
  - Bug que quando escreve clica no sintoma e dps tira, ele continua sem sumir causando o sintoma duplicado
  - No cadastro ta marcado gato msm qnd é cachorro
  - No cadastro de doenças, por sintomas também
+
+
+npx prettier --write .

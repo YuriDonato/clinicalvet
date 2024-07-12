@@ -50,6 +50,11 @@ const DashboardToolsOptions: PropDashboardOption[] = [
     to: '/tools/affinity',
     img: test,
     text: 'Tabela de Afinidade de Antibioticos'
+  },
+  {
+    to: '/tools/teste',
+    img: test,
+    text: 'Teste'
   }
 ]
 
