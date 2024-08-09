@@ -13,6 +13,7 @@ const HeroSection = () => (
     textAlign="center"
     minH="fit-content"
     position="relative"
+    borderTopRadius={'xl' as any}
   >
     <Heading
       as={motion.h1}

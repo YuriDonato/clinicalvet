@@ -38,7 +38,7 @@ const PricingCard = ({ plan, price, originalPrice, description }: Props) => (
 )
 
 const PricingSection = () => (
-  <Box as={motion.section} p={8} bg="#fff">
+  <Box as={motion.section} p={8} bg="#fff" borderBottomRadius={'xl' as any}>
     <Heading textAlign="center" mb={6}>
       Planos e Preços
     </Heading>
