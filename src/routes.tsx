@@ -17,7 +17,7 @@ import Teste from './pages/Teste'
 const Rotas = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/landingPage" element={<Landing />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/clinic" element={<Clinic />} />
