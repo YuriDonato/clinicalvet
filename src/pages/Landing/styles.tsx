@@ -26,7 +26,7 @@ export const Header = styled.div`
     width: 100%;
     h1 {
       font-weight: 700;
-      font-size: 3rem;
+      font-size: 2.5rem;
       font-family: 'Lato', sans-serif;
       text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
     }
@@ -41,7 +41,7 @@ export const Header = styled.div`
       width: 4rem;
       height: 3rem;
       position: absolute;
-      top: 5%;
+      top: 4%;
       right: 3.5%;
     }
   }
