@@ -14,6 +14,8 @@ import {
 import { useEffect, useState } from 'react'
 import { Container } from '../../styles'
 import ReturnButton from '../../components/returnButton'
+import useBreakpoint from '../../utils/Breakpoints'
+import * as S from './styles'
 
 interface repoDesidratacao {
   '4%': boolean
@@ -41,6 +43,7 @@ const FluidTherapy = () => {
   const [limiteInfusao, setLimiteInfusao] = useState(0)
   const [categoriaLimiteInfusao, setCategoriaLimiteInfusao] = useState('')
   const [taxaInfusao, setTaxaInfusao] = useState(0)
+  const isMobile = useBreakpoint()
 
   const Calcular = () => {
     let tempNecessidade = 0
@@ -123,6 +126,206 @@ const FluidTherapy = () => {
   useEffect(() => {
     Calcular()
   }, [necessidadeBasal, reposicaoDesidratacao, perdaHidrica])
+
+  if (isMobile) {
+    return (
+      <>
+        <S.Header>
+          <S.CustomReturnButton customRoute="tools" />
+          <div>
+            <h1>FluidVet</h1>
+            <h2>Calculadora de Fluidoterapia</h2>
+          </div>
+        </S.Header>
+        <S.MainContainer>
+          <Container>
+            <Select
+              placeholder="Determine a necessidade basal de líquidos"
+              marginTop={'1rem'}
+              onChange={(e) => {
+                setNecessidadeBasal(e.currentTarget.value)
+              }}
+            >
+              <option defaultChecked value="carnivoros">
+                Carnivoros
+              </option>
+              <option value="equideos">Eqüideos</option>
+              <option value="ruminantes">Ruminantes</option>
+            </Select>
+
+            {necessidadeBasal == 'carnivoros' ? (
+              <>
+                <Select
+                  placeholder="Selecione a categoria de idade"
+                  marginTop={'1rem'}
+                  onChange={(e) => {
+                    setNecessidadeBasalAdicional(e.currentTarget.value)
+                  }}
+                >
+                  <option defaultChecked value="adulto">
+                    Adulto
+                  </option>
+                  <option value="filhote">Filhote</option>
+                </Select>
+                <Select
+                  placeholder="Selecione a categoria de especie"
+                  marginTop={'1rem'}
+                  onChange={(e) => {
+                    setCategoriaLimiteInfusao(e.currentTarget.value)
+                  }}
+                >
+                  <option value="felino">Felino</option>
+                  <option value="canino">Canino</option>
+                </Select>
+              </>
+            ) : (
+              <></>
+            )}
+
+            {/* Peso do animal */}
+            <Input
+              placeholder="Insira o peso do animal"
+              value={peso}
+              onChange={(e) => {
+                setPeso(e.target.value)
+              }}
+            ></Input>
+
+            {/* % de Desidratação */}
+            <TableContainer>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>Marcar</Th>
+                    <Th>% de desidratação</Th>
+                    <Th>Sinais clinicos associados</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr backgroundColor={'#7ee4e1'}>
+                    <Td>
+                      <Checkbox
+                        onChange={(e) => {
+                          setReposicaoDesidratacao({
+                            ...reposicaoDesidratacao,
+                            '4%': !reposicaoDesidratacao['4%']
+                          })
+                        }}
+                        iconColor="white"
+                        colorScheme="green"
+                      ></Checkbox>
+                    </Td>
+                    <Td>4%</Td>
+                    <Td>Apenas histórico de adipsia</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      <Checkbox
+                        onChange={(e) => {
+                          setReposicaoDesidratacao({
+                            ...reposicaoDesidratacao,
+                            '5-6%': !reposicaoDesidratacao['5-6%']
+                          })
+                        }}
+                        iconColor="white"
+                        colorScheme="green"
+                      ></Checkbox>
+                    </Td>
+                    <Td>5-6%</Td>
+                    <Td>
+                      Urina concentrada, apatia, redução da elasticidade cutânea
+                      e mucosas parcialmente ressecadas
+                    </Td>
+                  </Tr>
+                  <Tr backgroundColor={'#7ee4e1'}>
+                    <Td>
+                      <Checkbox
+                        onChange={(e) => {
+                          setReposicaoDesidratacao({
+                            ...reposicaoDesidratacao,
+                            '8%': !reposicaoDesidratacao['8%']
+                          })
+                        }}
+                        iconColor="white"
+                        colorScheme="green"
+                      ></Checkbox>
+                    </Td>
+                    <Td>8%</Td>
+                    <Td>
+                      Redução da elasticidade cutânea, mucosas secas e viscosas,
+                      retração do bulbo ocular, oligúria e TRC {'>'} 3
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      <Checkbox
+                        onChange={(e) => {
+                          setReposicaoDesidratacao({
+                            ...reposicaoDesidratacao,
+                            '10-12%': !reposicaoDesidratacao['10-12%']
+                          })
+                        }}
+                        iconColor="white"
+                        colorScheme="green"
+                      ></Checkbox>
+                    </Td>
+                    <Td>10-12%</Td>
+                    <Td>
+                      Todos os sinais anteriores acrescidos de pulso fraco e
+                      contrações involuntarias
+                    </Td>
+                  </Tr>
+                  <Tr backgroundColor={'#7ee4e1'}>
+                    <Td>
+                      <Checkbox
+                        onChange={(e) => {
+                          setReposicaoDesidratacao({
+                            ...reposicaoDesidratacao,
+                            '12-15%': !reposicaoDesidratacao['12-15%']
+                          })
+                        }}
+                        iconColor="white"
+                        colorScheme="green"
+                      ></Checkbox>
+                    </Td>
+                    <Td>12-15%</Td>
+                    <Td>Choque e óbito</Td>
+                  </Tr>
+                </Tbody>
+                <Tfoot>
+                  <Tr>
+                    <Th>Marcar</Th>
+                    <Th>% de desidratação</Th>
+                    <Th>Sinais clinicos associados</Th>
+                  </Tr>
+                </Tfoot>
+              </Table>
+            </TableContainer>
+
+            {/* Perdas Hídricas Contínuas */}
+            <Select
+              placeholder="Determine as perdas hídricas contínuas"
+              marginTop={'1rem'}
+              onChange={(e) => {
+                setPerdaHidrica(e.currentTarget.value)
+              }}
+            >
+              <option defaultChecked value="vomito">
+                Vômito
+              </option>
+              <option value="diarreia">Diarréia</option>
+              <option value="ambos">Ambos</option>
+            </Select>
+
+            {/* somar tudo e mostrar */}
+            <h1>Volume Total: {volumeFinal}ml/dia</h1>
+            {/* <h1>Velocidade de Infusão: {taxaInfusao}ml/hora</h1> */}
+          </Container>
+        </S.MainContainer>
+        <S.Footer></S.Footer>
+      </>
+    )
+  }
 
   return (
     <>

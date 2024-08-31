@@ -1,28 +1,45 @@
-import * as db from '../../services/firebase'
+import React, { useState } from 'react'
 
-const Teste = () => {
-  let Key: string | null = '123'
-  function criarData() {
-    const newKey = db.push(db.child(db.ref(db.database), 'users')).key
-    Key = newKey
-    db.set(db.ref(db.database, `users/${newKey}`), {
-      username: 'teste'
-    })
-  }
+import { CreatePreg } from '../../utils/farmacoNeonato/CRUD'
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import Farmaco from '../../components/Neonato/Registro/Farmaco'
+import TabelaFarmaco from '../../components/Neonato/Tabela/Farmaco'
 
-  function deletarData() {
-    db.remove(db.ref(db.database, `users/${Key}`))
-  }
+const Teste: React.FC = () => {
+  const [tipo, setTipo] = useState('')
+  const [classe, setClasse] = useState('')
+  const [nome, setNome] = useState('')
 
-  function editarData() {
-    db.update(db.ref(db.database, `users/${Key}`), { username: 'atualizado' })
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    CreatePreg(nome, tipo, classe)
   }
 
   return (
     <>
-      {/* <h1 onClick={criarData}>clique em mim pra criar</h1>
-      <h1 onClick={deletarData}>clique em mim pra deletar</h1>
-      <h1 onClick={editarData}>clique em mim pra remover</h1> */}
+      <Tabs>
+        <TabList>
+          <Tab>Registro Preg</Tab>
+          <Tab>Registro Neo</Tab>
+          <Tab>Vis Preg</Tab>
+          <Tab>Vis Neo</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <Farmaco paciente="preg" />
+          </TabPanel>
+          <TabPanel>
+            <Farmaco paciente="neo" />
+          </TabPanel>
+          <TabPanel>
+            <TabelaFarmaco paciente="preg" />
+          </TabPanel>
+          <TabPanel>
+            <TabelaFarmaco paciente="neo" />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </>
   )
 }
