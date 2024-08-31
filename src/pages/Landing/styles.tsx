@@ -32,9 +32,17 @@ export const Header = styled.div`
     }
 
     h2 {
+      margin-top: 1rem;
       font-weight: 400;
-      font-size: 1rem;
+      font-size: 1.5rem;
       font-family: 'Lora', serif;
+    }
+    img {
+      width: 5rem;
+      height: 4rem;
+      position: absolute;
+      top: 3.5%;
+      right: 10%;
     }
   }
 `

@@ -9,12 +9,18 @@ import AnimatedBackground from './AnimatedBackground'
 import useBreakpoint from '../../utils/Breakpoints'
 import * as S from './styles'
 
+import HeartImg from '../../assets/images/icon-heart.png'
 import FluidIcon from '../../assets/images/fluid-icon.png'
 import PharmaIcon from '../../assets/images/pharma-icon.png'
 import HemoIcon from '../../assets/images/hemo-icon.png'
 import FooterImg from '../../assets/images/landing-footer-image.png'
+import { Link } from 'react-router-dom'
 const Landing = () => {
   const isMobile = useBreakpoint()
+
+  function onClick(buttonName: string) {
+    //teste
+  }
 
   if (isMobile) {
     return (
@@ -24,22 +30,29 @@ const Landing = () => {
           <div>
             <h1>ClinicalVet</h1>
             <h2>Faclitando a rotina do Médico Veterinário</h2>
+            <img src={HeartImg}></img>
           </div>
         </S.Header>
         <S.MainContainer>
           <S.ButtonList>
-            <S.ButtonContainer>
-              <span>FluidVet</span>
-              <S.FluidIcon src={FluidIcon}></S.FluidIcon>
-            </S.ButtonContainer>
-            <S.ButtonContainer>
-              <span>PharmaVet</span>
-              <img src={PharmaIcon}></img>
-            </S.ButtonContainer>
-            <S.ButtonContainer>
-              <span>HemoVet</span>
-              <img src={HemoIcon}></img>
-            </S.ButtonContainer>
+            <Link to="/tools/fluid" style={{ width: '100%' }}>
+              <S.ButtonContainer>
+                <span>FluidVet</span>
+                <S.FluidIcon src={FluidIcon}></S.FluidIcon>
+              </S.ButtonContainer>
+            </Link>
+            <Link to="/tools/fluid" style={{ width: '100%' }}>
+              <S.ButtonContainer>
+                <span>PharmaVet</span>
+                <img src={PharmaIcon}></img>
+              </S.ButtonContainer>
+            </Link>
+            <Link to="/tools/fluid" style={{ width: '100%' }}>
+              <S.ButtonContainer>
+                <span>HemoVet</span>
+                <img src={HemoIcon}></img>
+              </S.ButtonContainer>
+            </Link>
           </S.ButtonList>
           <S.MainText>
             Três Ferramentas Essenciais em <br />
