@@ -34,15 +34,15 @@ export const Header = styled.div`
     h2 {
       margin-top: 1rem;
       font-weight: 400;
-      font-size: 1.5rem;
+      font-size: 1rem;
       font-family: 'Lora', serif;
     }
     img {
-      width: 5rem;
-      height: 4rem;
+      width: 4rem;
+      height: 3rem;
       position: absolute;
-      top: 3.5%;
-      right: 10%;
+      top: 5%;
+      right: 3.5%;
     }
   }
 `
@@ -84,7 +84,7 @@ export const Footer = styled.div`
 
 export const ButtonList = styled.div`
   display: flex;
-  padding-top: 10%;
+  padding-top: 25%;
   flex-direction: column;
   align-items: flex-start;
   text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
@@ -102,7 +102,7 @@ export const ButtonContainer = styled.div`
     font-size: 1.9rem;
     flex-direction: row;
     padding: 1rem 0 0.5rem 0;
-    width: 35%;
+    width: 50%;
     align-items: center;
     justify-content: center;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
@@ -125,7 +125,7 @@ export const MainText = styled.h1`
   color: white;
   text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
   font-weight: 400;
-  font-size: 2rem;
+  font-size: 1.5rem;
   padding: 1rem;
   margin-bottom: 0.5rem;
 `
@@ -138,7 +138,7 @@ export const FooterText = styled.h1`
   color: white;
   text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
   font-weight: 400;
-  font-size: 2rem;
+  font-size: 1.5rem;
   padding: 1rem;
   margin-bottom: 0.5rem;
   text-align: center;
