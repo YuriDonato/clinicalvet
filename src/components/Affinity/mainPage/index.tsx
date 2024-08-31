@@ -72,9 +72,6 @@ const MainPage = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <ReturnButton customRoute="tools" />
-      </HeaderContainer>
       {isLoading === true ? (
         <PageContainer>
           <LoadingContainer>
