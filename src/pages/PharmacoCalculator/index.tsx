@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  FormLabel,
   Input,
   Select,
   Table,
@@ -44,6 +45,7 @@ const PharmacoCalculator = () => {
         <h1>Calculadora</h1>
 
         {/* Peso do animal */}
+        <FormLabel>Peso</FormLabel>
         <Input
           placeholder="Insira o peso do animal"
           value={peso}
@@ -53,6 +55,7 @@ const PharmacoCalculator = () => {
         ></Input>
 
         {/* Dose */}
+        <FormLabel>Dose</FormLabel>
         <Input
           placeholder="Insira a dose"
           value={dose}
@@ -62,6 +65,7 @@ const PharmacoCalculator = () => {
         ></Input>
 
         {/* Concentracao */}
+        <FormLabel>Concentração</FormLabel>
         <Input
           placeholder="Insira a concentração"
           value={concentracao}
