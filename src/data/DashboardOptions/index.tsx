@@ -47,6 +47,11 @@ const DashboardToolsOptions: PropDashboardOption[] = [
     text: 'Calculadora de Fluidoterapia'
   },
   {
+    to: '/tools/pharmacocalculator',
+    img: test,
+    text: 'Calculadora Farmacologica'
+  },
+  {
     to: '/tools/affinity',
     img: test,
     text: 'Tabela de Afinidade de Antibioticos'
