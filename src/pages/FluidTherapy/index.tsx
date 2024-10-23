@@ -318,7 +318,14 @@ const FluidTherapy = () => {
             </Select>
 
             {/* somar tudo e mostrar */}
-            <h1>Volume Total: {volumeFinal}ml/dia</h1>
+            <h1>
+              Volume Total:{' '}
+              {volumeFinal.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+              ml/dia
+            </h1>
             {/* <h1>Velocidade de Infusão: {taxaInfusao}ml/hora</h1> */}
           </Container>
         </S.MainContainer>

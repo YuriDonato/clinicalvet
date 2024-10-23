@@ -47,7 +47,7 @@ const Landing = () => {
                 <img src={PharmaIcon}></img>
               </S.ButtonContainer>
             </Link>
-            <Link to="/tools/fluid" style={{ width: '100%' }}>
+            <Link to="/tools/f  'luid" style={{ width: '100%' }}>
               <S.ButtonContainer>
                 <span>HemoVet</span>
                 <img src={HemoIcon}></img>
