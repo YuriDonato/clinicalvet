@@ -131,7 +131,7 @@ const FluidTherapy = () => {
     return (
       <>
         <S.Header>
-          <S.CustomReturnButton customRoute="tools" />
+          {/* <S.CustomReturnButton customRoute="tools" /> */}
           <div>
             <h1>FluidVet</h1>
             <h2>Calculadora de Fluidoterapia</h2>
