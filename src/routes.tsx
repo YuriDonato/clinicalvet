@@ -18,16 +18,16 @@ import PharmacoCalculator from './pages/PharmacoCalculator'
 const Rotas = () => {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/landingPage" element={<Landing />} />
+      <Route path="/" element={<FluidTherapy />} />
+      {/* <Route path="/landingPage" element={<Landing />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/clinic" element={<Clinic />} />
       <Route path="/disease" element={<Disease />} />
       <Route path="/disease/:key" element={<DiseaseDetails />} />
       <Route path="/tools" element={<Tools />} />
-      <Route path="/tools/hemo" element={<Hemo />} />
+      <Route path="/tools/hemo" element={<Hemo />} /> */}
       <Route path="/tools/fluid" element={<FluidTherapy />} />
-      <Route path="/tools/affinity" element={<DrugAffinity />} />
+      {/* <Route path="/tools/affinity" element={<DrugAffinity />} />
       <Route
         path="/tools/pharmacocalculator"
         element={<PharmacoCalculator />}
@@ -36,7 +36,7 @@ const Rotas = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/admin/registerAdmin" element={<RegisterAdmin />} />
-      <Route path="/admin/registerDisease" element={<RegisterDisease />} />
+      <Route path="/admin/registerDisease" element={<RegisterDisease />} /> */}
     </Routes>
   )
 }
